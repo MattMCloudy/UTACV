@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+CVDock/
 build/
 develop-eggs/
 dist/
@@ -23,6 +24,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.idea
 MANIFEST
 
 # PyInstaller
