@@ -11,6 +11,10 @@ class ImageState {
         Tool current_tool;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), current_tool(eyedropper) {}
+        cv::Mat getCurrentImage();
+        cv::Mat getOriginalImage();
+        void toggleTool();
+        Tool getTool();
 };
 
 cv::Mat ImageState::getCurrentImage() {

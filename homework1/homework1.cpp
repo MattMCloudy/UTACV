@@ -40,8 +40,10 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata);
  * @return return code (0 for normal termination)
  * @author Christoper D. McMurrough
  **********************************************************************************************************************/
-static void clickCallback(int event, int x, int y, int flags, void* imageStateRef)
+static void clickCallback(int event, int x, int y, int flags, void* userdata)
 {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
     if(event == cv::EVENT_LBUTTONDOWN)
     {
         std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
@@ -73,7 +75,6 @@ int main(int argc, char **argv)
     // open the input image
     std::string inputFileName = "test.png";
 	cv::Mat imageIn;
-    ImageState imageState;
 	imageIn = cv::imread(inputFileName, CV_LOAD_IMAGE_COLOR);
 
 	// check for file error
@@ -83,7 +84,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-    imageState = new ImageState(imageIn);
+    ImageState imageState = new ImageState(imageIn);
 
 	
     // display the input image
