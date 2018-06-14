@@ -25,6 +25,7 @@
 #include <iostream>
 #include <string>
 #include "opencv2/opencv.hpp"
+#include "image_state.cpp"
 
 // function prototypes
 static void clickCallback(int event, int x, int y, int flags, void* userdata);
@@ -39,7 +40,7 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata);
  * @return return code (0 for normal termination)
  * @author Christoper D. McMurrough
  **********************************************************************************************************************/
-static void clickCallback(int event, int x, int y, int flags, void* userdata)
+static void clickCallback(int event, int x, int y, int flags, void* imageStateRef)
 {
     if(event == cv::EVENT_LBUTTONDOWN)
     {
@@ -47,7 +48,8 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata)
     }
     else if(event == cv::EVENT_RBUTTONDOWN)
     {
-        std::cout << "RIGHT CLICK (" << x << ", " << y << ")" << std::endl;
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to" << imageStateRef->getTool() << std::endl;
     }
     else if(event == cv::EVENT_MBUTTONDOWN)
     {
@@ -71,6 +73,7 @@ int main(int argc, char **argv)
     // open the input image
     std::string inputFileName = "test.png";
 	cv::Mat imageIn;
+    ImageState ImageState;
 	imageIn = cv::imread(inputFileName, CV_LOAD_IMAGE_COLOR);
 
 	// check for file error
@@ -79,10 +82,13 @@ int main(int argc, char **argv)
 		std::cout << "Error while opening file " << inputFileName << std::endl;
 		return 0;
 	}
+
+    imageState = new ImageState(imageIn);
+
 	
     // display the input image
-	cv::imshow("imageIn", imageIn);
-	cv::setMouseCallback("imageIn", clickCallback, &imageIn);
+	cv::imshow("imageIn", imageState.getCurrentImage());
+	cv::setMouseCallback("imageIn", clickCallback, &imageState);
 	cv::waitKey();
 }
 
