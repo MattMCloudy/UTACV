@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     // open the input image
     std::string inputFileName = "test.png";
 	cv::Mat imageIn;
-    ImageState ImageState;
+    ImageState imageState;
 	imageIn = cv::imread(inputFileName, CV_LOAD_IMAGE_COLOR);
 
 	// check for file error
