@@ -2,7 +2,7 @@
 #include <string>
 #include "opencv2/opencv.hpp"
 
-static enum Tool {eyedropper, crop, pencil, paint_bucket, reset};
+enum Tool {eyedropper, crop, pencil, paint_bucket, reset};
 
 class ImageState {
     private:

@@ -84,12 +84,12 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-    ImageState imageState = new ImageState(imageIn);
+    ImageState* imageState = new ImageState(imageIn);
 
 	
     // display the input image
-	cv::imshow("imageIn", imageState.getCurrentImage());
-	cv::setMouseCallback("imageIn", clickCallback, &imageState);
+	cv::imshow("imageIn", imageState->getCurrentImage());
+	cv::setMouseCallback("imageIn", clickCallback, imageState);
 	cv::waitKey();
 }
 
