@@ -28,7 +28,7 @@ cv::Mat ImageState::getOriginalImage() {
 void ImageState::toggleTool() {
     if (current_tool != reset) {
         int tool_int = current_tool;
-        current_tool = static_cast<Tool>(tool_int++)
+        current_tool = static_cast<Tool>(tool_int++);
     } else {
         current_tool = eyedropper;
     }
