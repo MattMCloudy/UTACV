@@ -10,7 +10,7 @@ class ImageState {
         cv::Mat original_image;
         Tool current_tool;
     public:
-        ImageState(cv::Mat image) : current_image(image), original_image(image) {}
+        ImageState(cv::Mat image) : current_image(image), original_image(image), current_tool(eyedropper) {}
 };
 
 cv::Mat ImageState::getCurrentImage() {
