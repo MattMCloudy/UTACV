@@ -42,7 +42,7 @@ Tool ImageState::getTool() {
 }
 
 void ImageState::setEyedropperColor(int x, int y) {
-    eyedropper_color = current_image.at<cv::Vec3b>(x, y);
+    eyedropper_color = current_image.at<cv::Vec3b>(y, x);
 }
 
 cv::Vec3b ImageState::getEyedropperColor() {
