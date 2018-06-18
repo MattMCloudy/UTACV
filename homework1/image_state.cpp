@@ -2,7 +2,7 @@
 #include <string>
 #include "opencv2/opencv.hpp"
 
-enum Tool {eyedropper, crop, pencil, paint_bucket, reset};
+enum class Tool {eyedropper, crop, pencil, paint_bucket, reset};
 
 class ImageState {
     private:
@@ -29,6 +29,7 @@ void ImageState::toggleTool() {
     if (current_tool != reset) {
         int tool_int = current_tool;
         current_tool = static_cast<Tool>(tool_int++);
+        cout << "TOOL UPDATE " << current_tool << std::endl;
     } else {
         current_tool = eyedropper;
     }
