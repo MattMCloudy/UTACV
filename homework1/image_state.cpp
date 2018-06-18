@@ -13,10 +13,11 @@ class ImageState {
         bool cropLeftMouseClicked;
         cv::Point initial_crop_location;
         cv::Point final_crop_location;
+        cv::Point updated_rectangle_point;
         cv::Rect crop_rectangle;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftMouseClicked(FALSE){}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftMouseClicked(false){}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
