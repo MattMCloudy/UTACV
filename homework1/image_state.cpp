@@ -62,7 +62,6 @@ cv::Vec3b ImageState::getEyedropperColor() {
 void ImageState::cropLeftClicked(int x, int y) {
     cropLeftMouseClicked = true;
     initial_crop_location = cv::Point(x,y);
-    crop_rectangle = cv::Rect(initial_crop_location, initial_crop_location);
 }
 
 bool ImageState::getCropLeftClicked() {
