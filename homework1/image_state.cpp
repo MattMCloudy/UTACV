@@ -79,6 +79,8 @@ void ImageState::executeCrop(int x, int y) {
 
 void ImageState::updateRectangle(int x, int y) {
     updated_rectangle_point = cv::Point(x,y);
-    crop_rectangle = cv::Rect(initial_crop_location, updated_rectangle_point);
-    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
+    if (initial_crop_location != updated_rectangle_point) {
+        crop_rectangle = cv::Rect(initial_crop_location, updated_rectangle_point);
+        cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
+    }
 }
