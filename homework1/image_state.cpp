@@ -10,15 +10,23 @@ class ImageState {
         cv::Mat original_image;
         Tool current_tool;
         cv::Vec3b eyedropper_color;
+        bool cropLeftClicked;
+        cv::Point initial_crop_location;
+        cv::Point final_crop_location;
+        cv::Rect crop_rectangle;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)) {}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftClicked(FALSE){}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
         Tool getTool();
         void setEyedropperColor(int x, int y);
         cv::Vec3b getEyedropperColor();
+        void cropLeftClicked(int x, int y);
+        bool getCropLeftClicked();
+        void executeCrop(int x, int y);
+        void updateRectangle(int x, int y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -48,4 +56,30 @@ void ImageState::setEyedropperColor(int x, int y) {
 
 cv::Vec3b ImageState::getEyedropperColor() {
     return eyedropper_color;
+}
+
+void ImageState::cropLeftClicked(int x, int y) {
+    cropLeftClicked = TRUE;
+    initial_crop_location = cv::Point(x,y);
+    crop_rectangle = cv::Rect(initial_crop_location, initial_crop_location)
+    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
+}
+
+bool ImageState::getCropLeftClicked() {
+    return cropLeftClicked;
+}
+
+void ImageState::executeCrop(int x, int y) {
+    cropLeftClicked = FALSE;
+    final_crop_location = cv::Point(x,y);
+    crop_rectangle = cv::Rect(initial_crop_location, final_crop_location);
+    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
+    current_image = current_image(crop_rectangle);
+    cv::imshow("cropped_image", current_image);
+}
+
+void ImageState::updateRectangle(int x, int y) {
+    updated_rectangle_point = cv::Point(x,y);
+    crop_rectangle = cv::Rect(initial_crop_location, updated_rectangle_point);
+    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
 }
