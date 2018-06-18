@@ -29,6 +29,125 @@
 
 // function prototypes
 static void clickCallback(int event, int x, int y, int flags, void* userdata);
+static void eyedropperTool(int event, int x, int y, int flags, void* userdata);
+static void cropTool(int event, int x, int y, int flags, void* userdata);
+static void pencilTool(int event, int x, int y, int flags, void* userdata);
+static void paintBucketTool(int event, int x, int y, int flags, void* userdata);
+static void resetTool(int event, int x, int y, int flags, void* userdata);
+
+static void eyedropperTool(int event, int x, int y, int flags, void* userdata) {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
+    if(event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
+    }
+    else if(event == cv::EVENT_MBUTTONDOWN)
+    {
+        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_MOUSEMOVE)
+    {
+        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+    }
+}
+
+static void cropTool(int event, int x, int y, int flags, void* userdata) {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
+    if(event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
+    }
+    else if(event == cv::EVENT_MBUTTONDOWN)
+    {
+        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_MOUSEMOVE)
+    {
+        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+    }
+}
+
+
+static void pencilTool(int event, int x, int y, int flags, void* userdata) {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
+    if(event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
+    }
+    else if(event == cv::EVENT_MBUTTONDOWN)
+    {
+        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_MOUSEMOVE)
+    {
+        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+    }
+}
+
+
+static void paintBucketTool(int event, int x, int y, int flags, void* userdata) {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
+    if(event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
+    }
+    else if(event == cv::EVENT_MBUTTONDOWN)
+    {
+        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_MOUSEMOVE)
+    {
+        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+    }
+}
+
+
+static void resetTool(int event, int x, int y, int flags, void* userdata) {
+    ImageState* imageStateRef = (ImageState*) userdata;
+
+    if(event == cv::EVENT_LBUTTONDOWN)
+    {
+        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
+    }
+    else if(event == cv::EVENT_MBUTTONDOWN)
+    {
+        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+    }
+    else if(event == cv::EVENT_MOUSEMOVE)
+    {
+        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+    }
+}
+
 
 /*******************************************************************************************************************//**
  * @brief handler for image click callbacks
@@ -43,6 +162,27 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata);
 static void clickCallback(int event, int x, int y, int flags, void* userdata)
 {
     ImageState* imageStateRef = (ImageState*) userdata;
+
+    switch (ImageStateRef->getTool()) {
+        case eyedropper:
+            eyedropperTool(int event, int x, int y, int flags, void* userdata);
+            break;
+        case crop:
+            cropTool(int event, int x, int y, int flags, void* userdata);
+            break;
+        case pencil:
+            pencilTool(int event, int x, int y, int flags, void* userdata);
+            break;
+        case paint_bucket:
+            paintBucketTool(int event, int x, int y, int flags, void* userdata);
+            break;
+        case reset:
+            resetTool(int event, int x, int y, int flags, void* userdata);
+            break;
+        case default:
+            std::cout << "Tool State Unknown, please try again" << std::endl;
+            break;
+    }
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
