@@ -40,7 +40,9 @@ static void eyedropperTool(int event, int x, int y, int flags, void* userdata) {
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
-        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+        std::cout << "Setting eyedropper color..." << std::endl;
+        imageStateRef->setEyedropperColor(x,y);
+        std::cout << "Eyedropper color set to " << imageStateRef->getEyedropperColor() << std::endl;
     }
     else if(event == cv::EVENT_RBUTTONDOWN)
     {
@@ -49,11 +51,9 @@ static void eyedropperTool(int event, int x, int y, int flags, void* userdata) {
     }
     else if(event == cv::EVENT_MBUTTONDOWN)
     {
-        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
     }
     else if(event == cv::EVENT_MOUSEMOVE)
     {
-        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
     }
 }
 

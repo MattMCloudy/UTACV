@@ -9,12 +9,15 @@ class ImageState {
         cv::Mat current_image;
         cv::Mat original_image;
         Tool current_tool;
+        cv::Vec3b eyedropper_color;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), current_tool(eyedropper) {}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
         Tool getTool();
+        void setEyedropperColor(int x, int y);
+        cv::Vec3b getEyedropperColor();
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -36,4 +39,12 @@ void ImageState::toggleTool() {
 
 Tool ImageState::getTool() {
     return current_tool;
+}
+
+void ImageState::setEyedropperColor(int x, int y) {
+    eyedropper_color = current_image.at<cv::Vec3b>(x, y);
+}
+
+cv::Vec3b ImageState::getEyedropperColor() {
+    return eyedropper_color;
 }
