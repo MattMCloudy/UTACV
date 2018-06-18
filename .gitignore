@@ -104,3 +104,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
