@@ -63,7 +63,6 @@ void ImageState::cropLeftClicked(int x, int y) {
     cropLeftMouseClicked = true;
     initial_crop_location = cv::Point(x,y);
     crop_rectangle = cv::Rect(initial_crop_location, initial_crop_location);
-    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
 }
 
 bool ImageState::getCropLeftClicked() {
