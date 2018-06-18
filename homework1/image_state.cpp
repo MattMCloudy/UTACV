@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <boolean>
 #include "opencv2/opencv.hpp"
 
 enum Tool {eyedropper, crop, pencil, paint_bucket, reset};
@@ -10,13 +11,13 @@ class ImageState {
         cv::Mat original_image;
         Tool current_tool;
         cv::Vec3b eyedropper_color;
-        bool cropLeftClicked;
+        bool cropLeftMouseClicked;
         cv::Point initial_crop_location;
         cv::Point final_crop_location;
         cv::Rect crop_rectangle;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftClicked(FALSE){}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftMouseClicked(FALSE){}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
@@ -59,18 +60,18 @@ cv::Vec3b ImageState::getEyedropperColor() {
 }
 
 void ImageState::cropLeftClicked(int x, int y) {
-    cropLeftClicked = TRUE;
+    cropLeftMouseClicked = TRUE;
     initial_crop_location = cv::Point(x,y);
     crop_rectangle = cv::Rect(initial_crop_location, initial_crop_location)
     cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
 }
 
 bool ImageState::getCropLeftClicked() {
-    return cropLeftClicked;
+    return cropLeftMouseClicked;
 }
 
 void ImageState::executeCrop(int x, int y) {
-    cropLeftClicked = FALSE;
+    cropLeftMouseClicked = FALSE;
     final_crop_location = cv::Point(x,y);
     crop_rectangle = cv::Rect(initial_crop_location, final_crop_location);
     cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
