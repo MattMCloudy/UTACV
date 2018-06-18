@@ -11,7 +11,8 @@ class ImageState {
         Tool current_tool;
         cv::Vec3b eyedropper_color;
     public:
-        ImageState(cv::Mat image) : current_image(image), original_image(image), current_tool(eyedropper) {}
+        ImageState(cv::Mat image) : current_image(image), original_image(image), 
+            current_tool(eyedropper), eyedropper_color((cv::Vec3b) [255, 255, 255]) {}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
