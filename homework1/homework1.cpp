@@ -179,7 +179,7 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata)
         case reset:
             resetTool(event, x, y, flags, userdata);
             break;
-        case default:
+        default:
             std::cout << "Tool State Unknown, please try again" << std::endl;
             break;
     }
