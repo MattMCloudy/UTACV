@@ -51,7 +51,7 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata)
     else if(event == cv::EVENT_RBUTTONDOWN)
     {
         imageStateRef->toggleTool();
-        std::cout << "Tool is now set to" << imageStateRef->getTool() << std::endl;
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
     }
     else if(event == cv::EVENT_MBUTTONDOWN)
     {

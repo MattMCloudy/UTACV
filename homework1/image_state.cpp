@@ -29,7 +29,6 @@ void ImageState::toggleTool() {
     if (current_tool != reset) {
         int tool_int = current_tool;
         current_tool = static_cast<Tool>(++tool_int);
-        std::cout << "TOOL UPDATE " << current_tool << std::endl;
     } else {
         current_tool = eyedropper;
     }
