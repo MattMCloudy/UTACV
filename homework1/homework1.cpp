@@ -165,19 +165,19 @@ static void clickCallback(int event, int x, int y, int flags, void* userdata)
 
     switch (imageStateRef->getTool()) {
         case eyedropper:
-            eyedropperTool(int event, int x, int y, int flags, void* userdata);
+            eyedropperTool(event, x, y, flags, userdata);
             break;
         case crop:
-            cropTool(int event, int x, int y, int flags, void* userdata);
+            cropTool(event, x, y, flags, userdata);
             break;
         case pencil:
-            pencilTool(int event, int x, int y, int flags, void* userdata);
+            pencilTool(event, x, y, flags, userdata);
             break;
         case paint_bucket:
-            paintBucketTool(int event, int x, int y, int flags, void* userdata);
+            paintBucketTool(event, x, y, flags, userdata);
             break;
         case reset:
-            resetTool(int event, int x, int y, int flags, void* userdata);
+            resetTool(event, x, y, flags, userdata);
             break;
         case default:
             std::cout << "Tool State Unknown, please try again" << std::endl;
