@@ -110,6 +110,6 @@ void ImageState::paintBucketFillRecursive(int x, int y) {
 }
 
 void ImageState::reset() {
-    current_image = original_image
+    current_image = original_image;
     cv::imshow("imageIn", current_image);
 }
