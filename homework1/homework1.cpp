@@ -67,6 +67,10 @@ static void cropTool(int event, int x, int y, int flags, void* userdata) {
     else if (event == cv::EVENT_LBUTTONUP)
     {
         imageStateRef->executeCrop(x,y);
+    } else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
     }
 }
 
@@ -86,6 +90,11 @@ static void pencilTool(int event, int x, int y, int flags, void* userdata) {
     else if(event == cv::EVENT_MOUSEMOVE)
     {
         if(imageStateRef->getPencilActive()) imageStateRef->pencilDraw(x,y);
+    } 
+    else if(event == cv::EVENT_RBUTTONDOWN)
+    {
+        imageStateRef->toggleTool();
+        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
     }
 }
 
