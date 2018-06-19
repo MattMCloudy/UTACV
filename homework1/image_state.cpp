@@ -110,6 +110,7 @@ void ImageState::paintBucketFillRecursive(int x, int y) {
 }
 
 void ImageState::resetImage() {
+    std::cout << "Attempting reset..." << std::endl;
     current_image = original_image;
     cv::imshow("imageIn", current_image);
 }
