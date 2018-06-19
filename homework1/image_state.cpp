@@ -33,6 +33,7 @@ class ImageState {
         void pencilDraw(int x, int y);
         void paintBucketFill(int x, int y);
         void paintBucketFillRecursive(int x, int y);
+        void reset();
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -106,4 +107,9 @@ void ImageState::paintBucketFillRecursive(int x, int y) {
     paintBucketFillRecursive(x,y-1);
     paintBucketFillRecursive(x+1,y);
     paintBucketFillRecursive(x,y+1);
+}
+
+void ImageState::reset() {
+    current_image = original_image
+    cv::imshow("imageIn", current_image);
 }

@@ -119,20 +119,12 @@ static void resetTool(int event, int x, int y, int flags, void* userdata) {
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
-        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+        imageStateRef->reset();
     }
     else if(event == cv::EVENT_RBUTTONDOWN)
     {
         imageStateRef->toggleTool();
         std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
-    }
-    else if(event == cv::EVENT_MBUTTONDOWN)
-    {
-        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
-    }
-    else if(event == cv::EVENT_MOUSEMOVE)
-    {
-        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
     }
 }
 
