@@ -91,7 +91,7 @@ void ImageState::pencilDraw(int x, int y) {
 }
 
 void ImageState::paintBucketFill(int x, int y) {
-    anti_color = current_image.at<cv:Vec3b>(y,x);
+    anti_color = current_image.at<cv::Vec3b>(y,x);
     paintBucketFillRecursive(x,y);
     cv::imshow("imageIn", current_image);
 }
