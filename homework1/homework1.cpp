@@ -119,7 +119,7 @@ static void resetTool(int event, int x, int y, int flags, void* userdata) {
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
-        imageStateRef->reset();
+        imageStateRef->resetImage();
     }
     else if(event == cv::EVENT_RBUTTONDOWN)
     {
