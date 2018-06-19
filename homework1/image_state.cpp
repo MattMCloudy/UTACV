@@ -77,7 +77,7 @@ void ImageState::setPencilActive(bool active) {
     pencil_active = active;
 }
 
-void ImageState::getPencilActive() {
+bool ImageState::getPencilActive() {
     return pencil_active;
 }
 
