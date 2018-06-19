@@ -15,9 +15,11 @@ class ImageState {
         cv::Point updated_rectangle_point;
         cv::Rect crop_rectangle;
         bool pencil_active;
+        cv::Vec3b anti_color;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), pencil_active(false) {}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), 
+            pencil_active(false), anti_color(cv::Vec3b(0,0,0)) {}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
@@ -29,6 +31,8 @@ class ImageState {
         void setPencilActive(bool active);
         bool getPencilActive();
         void pencilDraw(int x, int y);
+        void paintBucketFill(int x, int y);
+        void paintBucketFillRecursive(int x, int y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -84,4 +88,22 @@ bool ImageState::getPencilActive() {
 void ImageState::pencilDraw(int x, int y) {
     current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
     cv::imshow("imageIn", current_image);
+}
+
+void ImageState::paintBucketFill(int x, int y) {
+    anti_color = current_image.at<cv:Vec3b>(y,x);
+    paintBucketFillRecursive(x,y);
+    cv::imshow("imageIn", current_image);
+}
+
+void ImageState::paintBucketFillRecursive(int x, int y) {
+    if(current_image.at<cv::Vec3b>(y,x) != anti_color) {
+        return;
+    }
+
+    current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
+    paintBucketFillRecursive(x-1,y);
+    paintBucketFillRecursive(x,y-1);
+    paintBucketFillRecursive(x+1,y);
+    paintBucketFillRecursive(x,y+1);
 }
