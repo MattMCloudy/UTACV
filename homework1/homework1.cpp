@@ -62,14 +62,15 @@ static void cropTool(int event, int x, int y, int flags, void* userdata) {
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
-        if(!imageStateRef->getCropLeftClicked()){
-            imageStateRef->cropLeftClicked(x,y);
-        } else {
-            imageStateRef->updateRectangle(x,y);
-        }
+        imageStateRef->cropLeftClicked(x,y);
     }
-    else {
-        if(imageStateRef->getCropLeftClicked()) imageStateRef->executeCrop(x,y);
+    else if (event == cv::EVENT_LBUTTONUP)
+    {
+        imageStateRef->executeCrop(x,y);
+    }
+    else if (event == cv::EVENT_MOUSEMOVE)
+    {
+        imageStateRef->updateRectangle(x,y);
     }
 }
 
