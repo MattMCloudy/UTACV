@@ -68,10 +68,6 @@ static void cropTool(int event, int x, int y, int flags, void* userdata) {
     {
         imageStateRef->executeCrop(x,y);
     }
-    else if (event == cv::EVENT_MOUSEMOVE)
-    {
-        imageStateRef->updateRectangle(x,y);
-    }
 }
 
 
