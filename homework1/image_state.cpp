@@ -17,7 +17,7 @@ class ImageState {
         bool pencil_active;
         cv::Vec3b anti_color;
     public:
-        ImageState(cv::Mat image) : current_image(image), original_image(image), 
+        ImageState(cv::Mat image) : current_image(cv::Mat(image)), original_image(image), 
             current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), 
             pencil_active(false), anti_color(cv::Vec3b(0,0,0)) {}
         cv::Mat getCurrentImage();
@@ -111,6 +111,6 @@ void ImageState::paintBucketFillRecursive(int x, int y) {
 
 void ImageState::resetImage() {
     std::cout << "Attempting reset..." << std::endl;
-    current_image = original_image;
+    current_image = cv::Mat(original_image);
     cv::imshow("imageIn", current_image);
 }
