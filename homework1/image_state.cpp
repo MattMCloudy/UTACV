@@ -25,7 +25,6 @@ class ImageState {
         cv::Vec3b getEyedropperColor();
         void cropLeftClicked(int x, int y);
         void executeCrop(int x, int y);
-        void updateRectangle(int x, int y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -66,16 +65,6 @@ void ImageState::executeCrop(int x, int y) {
     std::cout << "Left Mouse Click Released...  Attempting to execute crop from" << initial_crop_location << " to row: " << y << " col: " << x << std::endl;
     final_crop_location = cv::Point(y,x);
     crop_rectangle = cv::Rect(initial_crop_location, final_crop_location);
-    cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
     current_image = current_image(crop_rectangle);
     cv::imshow("cropped_image", current_image);
-}
-
-void ImageState::updateRectangle(int x, int y) {
-    std::cout << "Updating rectangle position..." << std::endl;
-    updated_rectangle_point = cv::Point(y,x);
-    if (initial_crop_location != updated_rectangle_point) {
-        crop_rectangle = cv::Rect(initial_crop_location, updated_rectangle_point);
-        cv::rectangle(current_image, crop_rectangle, cv::Scalar(0, 255, 0));
-    }
 }
