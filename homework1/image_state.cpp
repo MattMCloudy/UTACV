@@ -16,7 +16,7 @@ class ImageState {
         cv::Rect crop_rectangle;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), cropLeftMouseClicked(false){}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)) {}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
@@ -60,10 +60,6 @@ cv::Vec3b ImageState::getEyedropperColor() {
 void ImageState::cropLeftClicked(int x, int y) {
     std::cout << "New initial crop location set to row: " << y << "col: " << x << std::endl;
     initial_crop_location = cv::Point(y,x);
-}
-
-bool ImageState::getCropLeftClicked() {
-    return cropLeftMouseClicked;
 }
 
 void ImageState::executeCrop(int x, int y) {
