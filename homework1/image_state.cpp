@@ -58,7 +58,7 @@ cv::Vec3b ImageState::getEyedropperColor() {
 
 void ImageState::cropLeftClicked(int x, int y) {
     std::cout << "New initial crop location set to row: " << y << "col: " << x << std::endl;
-    initial_crop_location = cv::Point(x,y;
+    initial_crop_location = cv::Point(x,y);
 }
 
 void ImageState::executeCrop(int x, int y) {
