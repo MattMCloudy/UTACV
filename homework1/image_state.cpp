@@ -14,9 +14,10 @@ class ImageState {
         cv::Point final_crop_location;
         cv::Point updated_rectangle_point;
         cv::Rect crop_rectangle;
+        bool pencil_active;
     public:
         ImageState(cv::Mat image) : current_image(image), original_image(image), 
-            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)) {}
+            current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), pencil_active(false) {}
         cv::Mat getCurrentImage();
         cv::Mat getOriginalImage();
         void toggleTool();
@@ -25,6 +26,9 @@ class ImageState {
         cv::Vec3b getEyedropperColor();
         void cropLeftClicked(int x, int y);
         void executeCrop(int x, int y);
+        void setPencilActive(bool active);
+        bool getPencilActive();
+        void pencilDraw(int x, int y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -66,5 +70,18 @@ void ImageState::executeCrop(int x, int y) {
     final_crop_location = cv::Point(x,y);
     crop_rectangle = cv::Rect(initial_crop_location, final_crop_location);
     current_image = current_image(crop_rectangle);
+    cv::imshow("imageIn", current_image);
+}
+
+void setPencilActive(bool active) {
+    pencil_active = active;
+}
+
+void getPencilActive() {
+    return pencil_active;
+}
+
+void pencilDraw(int x, int y) {
+    current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
     cv::imshow("imageIn", current_image);
 }

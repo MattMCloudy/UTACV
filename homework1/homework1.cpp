@@ -76,20 +76,16 @@ static void pencilTool(int event, int x, int y, int flags, void* userdata) {
 
     if(event == cv::EVENT_LBUTTONDOWN)
     {
-        std::cout << "LEFT CLICK (" << x << ", " << y << ")" << std::endl;
+        imageStateRef->setPencilActive(true);
+        imageStateRef->pencilDraw(x,y);
     }
-    else if(event == cv::EVENT_RBUTTONDOWN)
+    else if(event == cv::EVENT_LBUTTONUP)
     {
-        imageStateRef->toggleTool();
-        std::cout << "Tool is now set to " << imageStateRef->getTool() << std::endl;
-    }
-    else if(event == cv::EVENT_MBUTTONDOWN)
-    {
-        std::cout << "MIDDLE CLICK (" << x << ", " << y << ")" << std::endl;
+        imageStateRef->setPencilActive(false);
     }
     else if(event == cv::EVENT_MOUSEMOVE)
     {
-        std::cout << "MOUSE OVER (" << x << ", " << y << ")" << std::endl;
+        if(imageStateRef->getPencilActive()) imageStateRef->pencilDraw(x,y);
     }
 }
 
