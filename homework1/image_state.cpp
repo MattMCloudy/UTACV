@@ -73,15 +73,15 @@ void ImageState::executeCrop(int x, int y) {
     cv::imshow("imageIn", current_image);
 }
 
-void setPencilActive(bool active) {
+void ImageState::setPencilActive(bool active) {
     pencil_active = active;
 }
 
-void getPencilActive() {
+void ImageState::getPencilActive() {
     return pencil_active;
 }
 
-void pencilDraw(int x, int y) {
+void ImageState::pencilDraw(int x, int y) {
     current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
     cv::imshow("imageIn", current_image);
 }
