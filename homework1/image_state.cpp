@@ -101,15 +101,18 @@ bool ImageState::inRange(int x, int y) {
 
 void ImageState::paintBucketFill(int x, int y) {
     anti_color = current_image.at<cv::Vec3b>(y,x);
+    std::cout << "Attempting paint bucket fill..." << std::endl;
     paintBucketFillRecursive(x,y);
     cv::imshow("imageIn", current_image);
 }
 
 void ImageState::paintBucketFillRecursive(int x, int y) {
+    std::cout << "checking values at (" << x << ", " << y << ")" << std::endl;
     if(current_image.at<cv::Vec3b>(y,x) != anti_color && inRange(x,y)) {
         return;
     }
-
+    
+    std::cout << "pixel designated for fill..." << std::endl;
     current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
     paintBucketFillRecursive(x-1,y);
     paintBucketFillRecursive(x,y-1);
