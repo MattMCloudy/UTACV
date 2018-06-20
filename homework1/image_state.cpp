@@ -8,6 +8,8 @@ class ImageState {
     private:
         cv::Mat current_image;
         cv::Mat original_image;
+        int image_rows;
+        int image_cols;
         Tool current_tool;
         cv::Vec3b eyedropper_color;
         cv::Point initial_crop_location;
@@ -17,7 +19,8 @@ class ImageState {
         bool pencil_active;
         cv::Vec3b anti_color;
     public:
-        ImageState(cv::Mat image) : current_image(image.clone()), original_image(image), 
+        ImageState(cv::Mat image) : current_image(image.clone()), original_image(image),
+            image_rows(image.rows), image_cols(image.cols), 
             current_tool(eyedropper), eyedropper_color(cv::Vec3b(255,255,255)), 
             pencil_active(false), anti_color(cv::Vec3b(0,0,0)) {}
         cv::Mat getCurrentImage();
@@ -34,6 +37,7 @@ class ImageState {
         void paintBucketFill(int x, int y);
         void paintBucketFillRecursive(int x, int y);
         void resetImage();
+        bool inRange(x,y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
@@ -91,6 +95,10 @@ void ImageState::pencilDraw(int x, int y) {
     cv::imshow("imageIn", current_image);
 }
 
+bool ImageState::inRange(int x, int y) {
+    return (x <= image_rows && x >= 0) && (y <= image_cols && y >= 0);
+}
+
 void ImageState::paintBucketFill(int x, int y) {
     anti_color = current_image.at<cv::Vec3b>(y,x);
     paintBucketFillRecursive(x,y);
@@ -98,7 +106,7 @@ void ImageState::paintBucketFill(int x, int y) {
 }
 
 void ImageState::paintBucketFillRecursive(int x, int y) {
-    if(current_image.at<cv::Vec3b>(y,x) != anti_color) {
+    if(current_image.at<cv::Vec3b>(y,x) != anti_color && inRange(x,y)) {
         return;
     }
 
