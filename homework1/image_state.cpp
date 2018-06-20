@@ -96,7 +96,7 @@ void ImageState::pencilDraw(int x, int y) {
 }
 
 bool ImageState::inRange(int x, int y) {
-    return (x <= image_rows && x >= 0) && (y <= image_cols && y >= 0);
+    return (y <= image_rows && y >= 0) && (x <= image_cols && x >= 0);
 }
 
 void ImageState::paintBucketFill(int x, int y) {
