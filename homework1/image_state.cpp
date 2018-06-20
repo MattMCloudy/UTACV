@@ -37,7 +37,7 @@ class ImageState {
         void paintBucketFill(int x, int y);
         void paintBucketFillRecursive(int x, int y);
         void resetImage();
-        bool inRange(x,y);
+        bool inRange(int x, int y);
 };
 
 cv::Mat ImageState::getCurrentImage() {
