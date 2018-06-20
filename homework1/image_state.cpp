@@ -108,11 +108,10 @@ void ImageState::paintBucketFill(int x, int y) {
 
 void ImageState::paintBucketFillRecursive(int x, int y) {
     //does will not access out of range values due to short-circuit eval
-    if(inRange(x,y) && current_image.at<cv::Vec3b>(y,x) != anti_color) {
+    if(!inRange(x,y) || current_image.at<cv::Vec3b>(y,x) == anti_color) {
         return;
     }
     
-    std::cout << "pixel designated for fill..." << std::endl;
     current_image.at<cv::Vec3b>(y,x) = eyedropper_color;
     paintBucketFillRecursive(x-1,y);
     paintBucketFillRecursive(x,y-1);
