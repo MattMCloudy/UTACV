@@ -107,8 +107,8 @@ void ImageState::paintBucketFill(int x, int y) {
 }
 
 void ImageState::paintBucketFillRecursive(int x, int y) {
-    std::cout << "checking values at (" << x << ", " << y << ")" << std::endl;
-    if(current_image.at<cv::Vec3b>(y,x) != anti_color && inRange(x,y)) {
+    //does will not access out of range values due to short-circuit eval
+    if(inRange(x,y) && current_image.at<cv::Vec3b>(y,x) != anti_color) {
         return;
     }
     
