@@ -118,7 +118,7 @@ int main(int argc, char **argv)
             cv::ellipse(imageEllipse, fittedEllipses[i], color, 2);
             std::cout << "ellipse drawn" << std::endl;
             // provide more info about the drawn ellipses
-            cv::Point2f* pts;
+            cv::Point2f pts[4];
             fittedEllipses[i].points(pts);
             std::cout << "Drawing ellipse with size: " << fittedEllipses[i].size << std::endl;
             std::cout << "Ellipse has center: " << fittedEllipses[i].center << std::endl;       
