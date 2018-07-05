@@ -64,10 +64,12 @@ int main(int argc, char **argv)
     std::cout << "image channels: " << imageIn.channels() << std::endl;
 
     // normalize image
-    cv::normalize(imageIn, imageIn, 0, 255);
+    cv::Mat imageNormalized;
+    cv::normalize(imageIn, imageNormalized, 0, 255);
 
     // equalize image
-    cv::equalizeHist(imageIn, imageIn);
+    cv::Mat imageEqualized;
+    cv::equalizeHist(imageNormalized, imageEqualized);
 
     // convert the image to grayscale
     cv::Mat imageGray;
