@@ -106,17 +106,6 @@ int main(int argc, char **argv)
         }
     }
 
-    // give ellipse size, center, points
-    for(int i = 0; i < contours.size(); i++) {
-        cv::Point2f* pts;
-        fittedEllipses[i].points(pts);
-        std::cout << "Drawing ellipse with size: " << fittedEllipses[i].size << std::endl;
-        std::cout << "Ellipse has center: " << fittedEllipses[i].center << std::endl;       
-        for(int j = 0; j < 4; j++) {
-            std::cout << "Ellipse has bounding point " << j << ": " << pts[j] << std::endl;
-        }
-    }
-
     // draw the ellipses
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     const int minEllipseInliers = 500;
@@ -127,6 +116,15 @@ int main(int argc, char **argv)
         {
             cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
             cv::ellipse(imageEllipse, fittedEllipses[i], color, 2);
+
+            // provide more info about the drawn ellipses
+            cv::Point2f* pts;
+            fittedEllipses[i].points(pts);
+            std::cout << "Drawing ellipse with size: " << fittedEllipses[i].size << std::endl;
+            std::cout << "Ellipse has center: " << fittedEllipses[i].center << std::endl;       
+            for(int j = 0; j < 4; j++) {
+                std::cout << "Ellipse has bounding point " << j << ": " << pts[j] << std::endl;
+            }
         }
     }
 
