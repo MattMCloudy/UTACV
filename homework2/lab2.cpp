@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     }
 
     // eliminate ellipses that are contained within other ellipses
-    std::vector<cv:RotatedRect> coinEllipses;
+    std::vector<cv::RotatedRect> coinEllipses;
     for(int i = 0; i < largeEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
         cv::Point2f center = largeEllipses[i].center;
