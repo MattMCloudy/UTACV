@@ -116,7 +116,7 @@ int main(int argc, char **argv)
         {
             cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
             cv::ellipse(imageEllipse, fittedEllipses[i], color, 2);
-
+            std::cout << "ellipse drawn" << std::endl;
             // provide more info about the drawn ellipses
             cv::Point2f* pts;
             fittedEllipses[i].points(pts);
