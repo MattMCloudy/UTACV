@@ -108,11 +108,11 @@ int main(int argc, char **argv)
 
     // give ellipse size, center, points
     for(int i = 0; i < contours.size(); i++) {
-        std::vector<cv::Point2f> pts;
+        cv::Point2f pts[];
         fittedEllipses[i].points(pts);
         std::cout << "Drawing ellipse with size: " << fittedEllipses[i].size << std::endl;
         std::cout << "Ellipse has center: " << fittedEllipses[i].center << std::endl;       
-        for(int j = 0; j < pts.size(); j++) {
+        for(int j = 0; j < 4; j++) {
             std::cout << "Ellipse has bounding point " << j << ": " << pts[j] << std::endl;
         }
     }
