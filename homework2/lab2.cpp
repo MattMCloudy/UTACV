@@ -63,15 +63,15 @@ int main(int argc, char **argv)
     std::cout << "image height: " << imageIn.size().height << std::endl;
     std::cout << "image channels: " << imageIn.channels() << std::endl;
 
+    // normalize image
+    cv::normalize(imageIn, imageIn, 0, 255);
+
+    // equalize image
+    cv::equalizeHist(imageIn, imageIn;
+
     // convert the image to grayscale
     cv::Mat imageGray;
     cv::cvtColor(imageIn, imageGray, cv::COLOR_BGR2GRAY);
-
-    // normalize image
-    cv::normalize(imageGray, imageGray, 0, 255);
-
-    // equalize image
-    cv::equalizeHist(imageGray, imageGray);
 
     // find the image edges
     cv::Mat imageEdges;
