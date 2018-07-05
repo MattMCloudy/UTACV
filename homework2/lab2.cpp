@@ -106,26 +106,44 @@ int main(int argc, char **argv)
         }
     }
 
-    // draw the ellipses
-    cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
+    // eliminate ellipses that are too small
+    std::vector<cv::RotatedRect> largeEllipses;
     const int minEllipseInliers = 500;
-    for(int i = 0; i < contours.size(); i++)
-    {
-        // draw any ellipse with sufficient inliers
-        if(contours.at(i).size() > minEllipseInliers)
-        {
-            cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
-            cv::ellipse(imageEllipse, fittedEllipses[i], color, 2);
-            std::cout << "ellipse drawn" << std::endl;
-            // provide more info about the drawn ellipses
+    for(int i = 0; i < contours.size(); i++) {
+        if(contours.at(i).size() > minEllipseInliers) {
+            std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
+            largeEllipses.push_back(fittedEllipses[i]);
+        }
+    }
+
+    // eliminate ellipses that are contained within other ellipses
+    std::vector<cv:RotatedRect> coinEllipses;
+    for(int i = 0; i < largeEllipses.size(); i++) {
+        bool isInsideOtherEllipse = false;
+        cv::Point2f center = largeEllipses[i].center;
+       
+        for(int j = 0; j < largeEllipses.size(); j++) {
+            if (i == j) continue;
+
+            // points are stored bottomLeft, topLeft, topRight, bottomRight
             cv::Point2f pts[4];
-            fittedEllipses[i].points(pts);
-            std::cout << "Drawing ellipse with size: " << fittedEllipses[i].size << std::endl;
-            std::cout << "Ellipse has center: " << fittedEllipses[i].center << std::endl;       
-            for(int j = 0; j < 4; j++) {
-                std::cout << "Ellipse has bounding point " << j << ": " << pts[j] << std::endl;
+            largeEllipses[i].points(pts);
+            if((center.x > pts[0].x && center.y > pts[0].y) 
+                && (center.x < pts[2].x && center.y < pts[2].y))
+            {
+                isInsideOtherEllipse = true;
             }
         }
+
+        if(!isInsideOtherEllipse) coinEllipses.push_back(largeEllipses[i]);
+    }
+
+    // draw the ellipses
+    cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
+    for(int i = 0; i < coinEllipses.size(); i++)
+    {
+        cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
+        cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
     }
 
     // display the images
