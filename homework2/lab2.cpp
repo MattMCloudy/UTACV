@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     cv::normalize(imageIn, imageIn, 0, 255);
 
     // equalize image
-    cv::equalizeHist(imageIn, imageIn;
+    cv::equalizeHist(imageIn, imageIn);
 
     // convert the image to grayscale
     cv::Mat imageGray;
