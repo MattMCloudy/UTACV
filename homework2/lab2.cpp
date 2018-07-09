@@ -178,7 +178,8 @@ int main(int argc, char **argv)
             sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
             std::cout << "Error from " << coinInt << " is " << sumOfSquaresError.at(coinInt) << std::endl;
         }
-        ellipseAssignments[i] = std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end())[0];
+        ellipseAssignments[i] = std::distance( sumOfSquaresError.begin(), 
+                                    std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end()));
         std::cout << "psyche: " << ellipseAssignments[i] << std::endl;
         coinCount[ellipseAssignments[i]]++;
     }
