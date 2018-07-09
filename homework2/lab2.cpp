@@ -176,6 +176,7 @@ int main(int argc, char **argv)
         std::vector<double> sumOfSquaresError(4);
         for(int coinInt = penny; coinInt != quarter; coinInt++) {
             sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
+            std::cout << "Error from " << coinInt << " is " << sumOfSquaresError.at(coinInt) << std::endl;
         }
         std::cout << "it breaks here" << std::endl;
         ellipseAssignments[i] = std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end())[0];
