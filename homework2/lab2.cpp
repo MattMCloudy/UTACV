@@ -130,13 +130,27 @@ int main(int argc, char **argv)
             if((center.x > pts[0].x && center.y < pts[0].y) 
                 && (center.x < pts[2].x && center.y > pts[2].y))
             {
-                std::cout << "Elimated contained ellipse" << std::endl;
+                std::cout << "Eliminated contained ellipse" << std::endl;
                 isInsideOtherEllipse = true;
             }
         }
 
         if(!isInsideOtherEllipse) coinEllipses.push_back(largeEllipses[i]);
     }
+
+    // determining the diameter of each ellipse
+    std::vector<double> ellipseDiameters;
+    for(int i = 0; i < coinEllipses.size(); i++) {
+        cv::Point2f pts[4];
+        coinEllipses[i].points(pts);
+        euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
+        std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
+        ellipseDiameters.push_back(euclideanDistance);
+    }
+
+    // classifying each coin type by diameter
+    // you could make this code camera distance agnostic by using a segmentation algorithm
+    // a couple to consider would be fishers natural breaks or kde, but thats another class
 
     // draw the ellipses
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
