@@ -174,11 +174,10 @@ int main(int argc, char **argv)
     for(int i = 0; i < ellipseDiameters.size(); i++) {
         double currentDiameter = ellipseDiameters[i];
         std::vector<double> sumOfSquaresError(4);
-        for(int coinInt = penny; coinInt != quarter; coinInt++) {
+        for(int coinInt = penny; coinInt != quarter+1; coinInt++) {
             sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
             std::cout << "Error from " << coinInt << " is " << sumOfSquaresError.at(coinInt) << std::endl;
         }
-        std::cout << "it breaks here" << std::endl;
         ellipseAssignments[i] = std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end())[0];
         std::cout << "psyche: " << ellipseAssignments[i] << std::endl;
         coinCount[ellipseAssignments[i]]++;
@@ -186,7 +185,7 @@ int main(int argc, char **argv)
 
     // add up the change
     double total = 0;
-    for(int coinInt = penny; coinInt != quarter; coinInt++) {
+    for(int coinInt = penny; coinInt != quarter+1; coinInt++) {
         switch(static_cast<CoinType>(coinInt)) {
             case penny:
                 std::cout << "There are " << coinCount[coinInt] << "pennies" << std::endl;
