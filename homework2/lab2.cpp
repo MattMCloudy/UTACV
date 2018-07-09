@@ -121,12 +121,14 @@ int main(int argc, char **argv)
     for(int i = 0; i < largeEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
         cv::Point2f center = largeEllipses[i].center;
+        std::out << "Ellipse Center: " << center << std::endl;
         for(int j = 0; j < largeEllipses.size(); j++) {
             if (i == j) continue;
 
             // points are stored bottomLeft, topLeft, topRight, bottomRight
             cv::Point2f pts[4];
             largeEllipses[j].points(pts);
+            std::cout << "Ellipse points: " << pts[0] << " " << pts[2] << std::endl;
             if((center.x > pts[0].x && center.y > pts[0].y) 
                 && (center.x < pts[2].x && center.y < pts[2].y))
             {
