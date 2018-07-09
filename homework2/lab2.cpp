@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     for(int i = 0; i < coinEllipses.size(); i++) {
         cv::Point2f pts[4];
         coinEllipses[i].points(pts);
-        euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
+        double euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
         std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
         ellipseDiameters.push_back(euclideanDistance);
     }
