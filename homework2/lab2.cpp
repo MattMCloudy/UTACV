@@ -166,13 +166,71 @@ int main(int argc, char **argv)
     // classifying each coin type by diameter
     // you could make this code camera distance agnostic by using a segmentation algorithm
     // a couple to consider would be fishers natural breaks or kde, but thats another class
+    // this piece requires a model.txt file with predefined diameters for each cointype
+    
+    enum CoinType = {penny, nickel, dime, quarter};
+    int coinCount[4];
+    int ellipseAssignments[ellipseDiameters.size()];
+    for(int i = 0; i < ellipseDiameters.size(); i++) {
+        double currentDiameter = ellipseDiameters[i];
+        double sumOfSquaresError[4];
+        for(int coinInt = penny; coinInt != quarter; coinInt++) {
+            sumOfSquaresError[coinInt] = pow(model[coinInt] - currentDiameter, 2);
+        }
+        ellipseAssignments[i] = std::min_element(sumOfSquaresError);
+        coinCount[ellipseAssignments[i]]++;
+    }
+
+    // add up the change
+    double total = 0;
+    for(int coinInt = penny; coinInt != quarter; coinInt++) {
+        switch(static_cast<CoinType>(coinInt)) {
+            case penny:
+                std::cout << "There are " << coinCount[coinInt] << "pennies" << std::endl;
+                total += 0.01 * coinCount[coinInt];
+                break;
+            case nickel:
+                std::cout << "There are " << coinCount[coinInt] << "nickels" << std::endl;
+                total += 0.05 * coinCount[coinInt];
+                break;
+            case dime:
+                std::cout << "There are " << coinCount[coinInt] << "dimes" << std::endl;
+                total += 0.1 * coinCount[coinInt];
+                break;
+            case quarter:
+                std::cout << "There are " << coinCount[coinInt] << "quarters" << std::endl;
+                total += 0.25 * coinCount[coinInt];
+                break;
+            default:
+                break;      
+        }
+    }
+    std::cout << "There is $" << total << " shown in the image!" << std::endl;
 
     // draw the ellipses
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     for(int i = 0; i < coinEllipses.size(); i++)
     {
-        cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
-        cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+        switch(static_cast<CoinType>(ellipseAssignments[i])) {
+            case penny:
+                cv::Scalar color = cv::Scalar(0,0,256);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                break;
+            case nickel;
+                cv::Scalar color = cv::Scalar(0,256,256);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                break;
+            case dime;
+                cv::Scalar color = cv::Scalar(256,0,0);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                break;
+            case quarter;
+                cv::Scalar color = cv::Scalar(0,256,0);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                break;
+            default:
+                break;
+        }
     }
 
     // display the images
