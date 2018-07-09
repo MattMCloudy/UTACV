@@ -177,7 +177,9 @@ int main(int argc, char **argv)
         for(int coinInt = penny; coinInt != quarter; coinInt++) {
             sumOfSquaresError[coinInt] = pow(model[coinInt] - currentDiameter, 2);
         }
+        std::cout << "it breaks here" << std::endl;
         ellipseAssignments[i] = std::min_element(sumOfSquaresError, sumOfSquaresError+4)[0];
+        std::cout << "psyche" << std::endl;
         coinCount[ellipseAssignments[i]]++;
     }
 
