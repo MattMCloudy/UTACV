@@ -176,11 +176,11 @@ int main(int argc, char **argv)
         std::vector<double> sumOfSquaresError(4);
         for(int coinInt = penny; coinInt != quarter+1; coinInt++) {
             sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
-            std::cout << "Error from " << coinInt << " is " << sumOfSquaresError.at(coinInt) << std::endl;
+            std::cout << "Error from " << static_cast<CoinType>(coinInt) << " is " << sumOfSquaresError.at(coinInt) << std::endl;
         }
         ellipseAssignments[i] = std::distance( sumOfSquaresError.begin(), 
                                     std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end()));
-        std::cout << "psyche: " << ellipseAssignments[i] << std::endl;
+        std::cout << "Ellipse assigned to coin: " << static_cast<CoinType>(ellipseAssignments[i]) << std::endl;
         coinCount[ellipseAssignments[i]]++;
     }
 
