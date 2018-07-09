@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     for(int i = 0; i < largeEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
         cv::Point2f center = largeEllipses[i].center;
-        std::out << "Ellipse Center: " << center << std::endl;
+        std::cout << "Ellipse Center: " << center << std::endl;
         for(int j = 0; j < largeEllipses.size(); j++) {
             if (i == j) continue;
 
