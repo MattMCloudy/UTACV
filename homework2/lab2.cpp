@@ -39,11 +39,12 @@
 int main(int argc, char **argv)
 {
     cv::Mat imageIn;
+    double model[5];
 
     // validate and parse the command line arguments
-    if(argc != NUM_COMNMAND_LINE_ARGUMENTS + 1)
+    if(argc != NUM_COMNMAND_LINE_ARGUMENTS + 2)
     {
-        std::printf("USAGE: %s <image_path> \n", argv[0]);
+        std::printf("USAGE: %s <image_path> <model>\n", argv[0]);
         return 0;
     }
     else
@@ -55,6 +56,20 @@ int main(int argc, char **argv)
         {
             std::cout << "Error while opening file " << argv[1] << std::endl;
             return 0;
+        }
+
+        std::ifstream in(argv[2]);
+
+        if(!in) {
+            std::cout << "Error opening model file " << argv[2] << std::endl;
+            return 0;
+        }
+        
+        std::string str;
+        int iter = 0;
+        while(std::getline(in, str)) {
+            model[iter] = double(str);
+            iter++;
         }
     }
 
