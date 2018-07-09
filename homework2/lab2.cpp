@@ -179,7 +179,7 @@ int main(int argc, char **argv)
         }
         std::cout << "it breaks here" << std::endl;
         ellipseAssignments[i] = std::min_element(sumOfSquaresError, sumOfSquaresError+4)[0];
-        std::cout << "psyche" << std::endl;
+        std::cout << "psyche: " << ellipseAssignments[i] << std::endl;
         coinCount[ellipseAssignments[i]]++;
     }
 
