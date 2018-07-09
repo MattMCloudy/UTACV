@@ -221,11 +221,11 @@ int main(int argc, char **argv)
                 color = cv::Scalar(0,256,256);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
-            case dime;
+            case dime:
                 color = cv::Scalar(256,0,0);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
-            case quarter;
+            case quarter:
                 color = cv::Scalar(0,256,0);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
