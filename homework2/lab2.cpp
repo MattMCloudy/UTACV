@@ -175,7 +175,7 @@ int main(int argc, char **argv)
         double currentDiameter = ellipseDiameters[i];
         std::vector<double> sumOfSquaresError(4);
         for(int coinInt = penny; coinInt != quarter; coinInt++) {
-            sumOfSquaresError[coinInt] = pow(model[coinInt] - currentDiameter, 2);
+            sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
         }
         ellipseAssignments[i] = std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end());
         coinCount[ellipseAssignments[i]]++;
