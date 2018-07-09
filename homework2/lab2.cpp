@@ -173,11 +173,11 @@ int main(int argc, char **argv)
     int ellipseAssignments[ellipseDiameters.size()];
     for(int i = 0; i < ellipseDiameters.size(); i++) {
         double currentDiameter = ellipseDiameters[i];
-        std::vector<double> sumOfSquaresError(4);
+        double sumOfSquaresError[4];
         for(int coinInt = penny; coinInt != quarter; coinInt++) {
-            sumOfSquaresError.at(coinInt) = pow(model[coinInt] - currentDiameter, 2);
+            sumOfSquaresError[coinInt] = pow(model[coinInt] - currentDiameter, 2);
         }
-        ellipseAssignments[i] = std::min_element(sumOfSquaresError.begin(), sumOfSquaresError.end());
+        ellipseAssignments[i] = std::min_element(sumOfSquaresError, sumOfSquaresError+4)[0];
         coinCount[ellipseAssignments[i]]++;
     }
 
