@@ -177,7 +177,7 @@ int main(int argc, char **argv)
         for(int coinInt = penny; coinInt != quarter; coinInt++) {
             sumOfSquaresError[coinInt] = pow(model[coinInt] - currentDiameter, 2);
         }
-        ellipseAssignments[i] = std::min_element(sumOfSquaresError);
+        ellipseAssignments[i] = std::min_element(sumOfSquaresError, sumOfSquaresError+4);
         coinCount[ellipseAssignments[i]]++;
     }
 
@@ -211,21 +211,22 @@ int main(int argc, char **argv)
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     for(int i = 0; i < coinEllipses.size(); i++)
     {
+        cv::Scalar color;
         switch(static_cast<CoinType>(ellipseAssignments[i])) {
             case penny:
-                cv::Scalar color = cv::Scalar(0,0,256);
+                color = cv::Scalar(0,0,256);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
-            case nickel;
-                cv::Scalar color = cv::Scalar(0,256,256);
+            case nickel:
+                color = cv::Scalar(0,256,256);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             case dime;
-                cv::Scalar color = cv::Scalar(256,0,0);
+                color = cv::Scalar(256,0,0);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             case quarter;
-                cv::Scalar color = cv::Scalar(0,256,0);
+                color = cv::Scalar(0,256,0);
                 cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             default:
