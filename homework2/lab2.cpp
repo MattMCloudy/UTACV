@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     // this piece requires a model.txt file with predefined diameters for each cointype
     
     enum CoinType {penny, nickel, dime, quarter};
-    int coinCount[4];
+    int coinCount[4] = {0,0,0,0};
     int ellipseAssignments[ellipseDiameters.size()];
     for(int i = 0; i < ellipseDiameters.size(); i++) {
         double currentDiameter = ellipseDiameters[i];
@@ -189,19 +189,19 @@ int main(int argc, char **argv)
     for(int coinInt = penny; coinInt != quarter+1; coinInt++) {
         switch(static_cast<CoinType>(coinInt)) {
             case penny:
-                std::cout << "There are " << coinCount[coinInt] << "pennies" << std::endl;
+                std::cout << "There are " << coinCount[coinInt] << " pennies" << std::endl;
                 total += 0.01 * coinCount[coinInt];
                 break;
             case nickel:
-                std::cout << "There are " << coinCount[coinInt] << "nickels" << std::endl;
+                std::cout << "There are " << coinCount[coinInt] << " nickels" << std::endl;
                 total += 0.05 * coinCount[coinInt];
                 break;
             case dime:
-                std::cout << "There are " << coinCount[coinInt] << "dimes" << std::endl;
+                std::cout << "There are " << coinCount[coinInt] << " dimes" << std::endl;
                 total += 0.1 * coinCount[coinInt];
                 break;
             case quarter:
-                std::cout << "There are " << coinCount[coinInt] << "quarters" << std::endl;
+                std::cout << "There are " << coinCount[coinInt] << " quarters" << std::endl;
                 total += 0.25 * coinCount[coinInt];
                 break;
             default:
