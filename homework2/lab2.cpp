@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         std::string str;
         int iter = 0;
         while(std::getline(in, str)) {
-            model[iter] = double(str);
+            model[iter] = stod(str);
             iter++;
         }
     }
