@@ -168,7 +168,7 @@ int main(int argc, char **argv)
     // a couple to consider would be fishers natural breaks or kde, but thats another class
     // this piece requires a model.txt file with predefined diameters for each cointype
     
-    enum CoinType = {penny, nickel, dime, quarter};
+    enum CoinType {penny, nickel, dime, quarter};
     int coinCount[4];
     int ellipseAssignments[ellipseDiameters.size()];
     for(int i = 0; i < ellipseDiameters.size(); i++) {
