@@ -171,16 +171,26 @@ int main(int argc, char **argv)
     const int minEllipseInliers = 400;
     for(int i = 0; i < contours.size(); i++) {
         if(contours.at(i).size() > minEllipseInliers) {
-            std::cout << "Ellipse found with size: " << coinEllipses[i].size << std::endl;
+            std::cout << "Ellipse found with size: " << coinEllipses[i].size() << std::endl;
             largeEllipses.push_back(coinEllipses[i]);
+        }
+    }  
+
+    // eliminate ellipses that are too big
+    std::vector<cv::RotatedRect> normalEllipses;
+    const int maxEllipseInliers = 1000;
+    for(int i = 0; i < largeEllipses.size(); i++) {
+        if(largeEllipses.at(i).size() > maxEllipseInliers) {
+            std::cout << "Ellipse found with size: " << largeEllipses[i].size() << std::endl;
+            normalEllipses.push_back(largeEllipses[i]);
         }
     }  
 
     // determining the diameter of each ellipse
     std::vector<double> ellipseDiameters;
-    for(int i = 0; i < largeEllipses.size(); i++) {
+    for(int i = 0; i < normalEllipses.size(); i++) {
         cv::Point2f pts[4];
-        largeEllipses[i].points(pts);
+        normalEllipses[i].points(pts);
         double euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
         std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
         ellipseDiameters.push_back(euclideanDistance);
@@ -241,19 +251,19 @@ int main(int argc, char **argv)
         switch(static_cast<CoinType>(ellipseAssignments[i])) {
             case penny:
                 color = cv::Scalar(0,0,256);
-                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
                 break;
             case nickel:
                 color = cv::Scalar(0,256,256);
-                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
                 break;
             case dime:
                 color = cv::Scalar(256,0,0);
-                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
                 break;
             case quarter:
                 color = cv::Scalar(0,256,0);
-                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
                 break;
             default:
                 break;
