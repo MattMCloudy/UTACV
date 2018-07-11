@@ -142,8 +142,10 @@ int main(int argc, char **argv)
             // points are stored bottomLeft, topLeft, topRight, bottomRight
             cv::Point2f pts[4];
             largeEllipses[j].points(pts);
-            if((center.x > pts[0].x && center.y < pts[0].y) 
+            if(((center.x > pts[0].x && center.y < pts[0].y) 
                 && (center.x < pts[2].x && center.y > pts[2].y))
+                || ((center.x > pts[1].x && center.y > pts[1].y)
+                && (center.x < pts[4].x && center.y < pts[4].y)))
             {
                 std::cout << "Eliminated contained ellipse" << std::endl;
                 isInsideOtherEllipse = true;
