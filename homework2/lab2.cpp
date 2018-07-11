@@ -115,7 +115,13 @@ int main(int argc, char **argv)
         for(int j = 0; j < normalEllipses.size(); j++) {
             cv::Point2f pts[4];
             normalEllipses[j].points(pts);
-            std::cout << "Points for ellipse " << j << " are " << pts << std::endl;
+
+            std::cout << "Points for ellipse " << j << " are ";
+            for(int k = 0; k < 4; k++) {
+                std::cout << pts[k] << " ";
+            }
+            std::cout << std::endl;
+            
             if(((center.x >= pts[0].x && center.y <= pts[0].y) 
                 && (center.x <= pts[2].x && center.y >= pts[2].y))
                 || ((center.x >= pts[1].x && center.y >= pts[1].y)
