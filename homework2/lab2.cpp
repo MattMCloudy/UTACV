@@ -89,19 +89,18 @@ int main(int argc, char **argv)
         }
     }
 
-    std::vector<cv::RotatedRect> fittedEllipses(contours.size());
+    std::vector<cv::RotatedRect> fittedEllipses;
     for(int i = 0; i < contours.size(); i++)
     {
         if(contours.at(i).size() > 300)
         {
-            fittedEllipses[i] = cv::fitEllipse(contours[i]);
+            fittedEllipses.push_back(cv::fitEllipse(contours[i]));
         }
     }
 
     std::vector<cv::RotatedRect> normalEllipses;
     for(int i = 0; i < fittedEllipses.size(); i++) {
-        if((fittedEllipses[i].size.height < 1000 && fittedEllipses[i].size.width < 1000)
-            && (fittedEllipses[i].size.height > 0 && fittedEllipses[i].size.width > 0)) 
+        if(fittedEllipses[i].size.height < 1000 && fittedEllipses[i].size.width < 1000) 
         {
             std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
             normalEllipses.push_back(fittedEllipses[i]);
@@ -112,15 +111,17 @@ int main(int argc, char **argv)
     for(int i = 0; i < normalEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
         cv::Point2f center = normalEllipses[i].center;
+        std::cout << "Ellipse " << i << " has center " << center << std::endl;
         for(int j = 0; j < normalEllipses.size(); j++) {
             cv::Point2f pts[4];
             normalEllipses[j].points(pts);
+            std::cout << "Points for ellipse " << j << " are " << pts << std::endl;
             if(((center.x >= pts[0].x && center.y <= pts[0].y) 
                 && (center.x <= pts[2].x && center.y >= pts[2].y))
                 || ((center.x >= pts[1].x && center.y >= pts[1].y)
                 && (center.x <= pts[4].x && center.y <= pts[4].y)))
             {
-                std::cout << "Eliminated contained ellipse" << std::endl;
+                std::cout << "Eliminated contained ellipse " << i << std::endl;
                 isInsideOtherEllipse = true;
             }
         }
