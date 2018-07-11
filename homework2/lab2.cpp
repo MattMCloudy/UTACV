@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     const int minEllipseInliers = 400;
     for(int i = 0; i < contours.size(); i++) {
         if(contours.at(i).size() > minEllipseInliers) {
-            std::cout << "Ellipse found with size: " << coinEllipses[i].size() << std::endl;
+            std::cout << "Ellipse found with size: " << coinEllipses.at(i).size() << std::endl;
             largeEllipses.push_back(coinEllipses[i]);
         }
     }  
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
     const int maxEllipseInliers = 1000;
     for(int i = 0; i < largeEllipses.size(); i++) {
         if(largeEllipses.at(i).size() > maxEllipseInliers) {
-            std::cout << "Ellipse found with size: " << largeEllipses[i].size() << std::endl;
+            std::cout << "Ellipse found with size: " << largeEllipses.at(i).size() << std::endl;
             normalEllipses.push_back(largeEllipses[i]);
         }
     }  
