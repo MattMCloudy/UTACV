@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 
         cv::Point2f center_i = normalEllipses[i].center;
         cv::Point2f pts[4];
-        normalEllipses[i].points(pts)
+        normalEllipses[i].points(pts);
         std::cout << "Ellipse " << i << " has center " << center << std::endl;
         double radius = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) ) / 2.0;
 
