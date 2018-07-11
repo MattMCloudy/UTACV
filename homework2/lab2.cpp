@@ -145,8 +145,8 @@ int main(int argc, char **argv)
     // eliminate ellipses that are too big
     std::vector<cv::RotatedRect> normalEllipses;
     for(int i = 0; i < fittedEllipses.size(); i++) {
-        if(fittedEllipses.size.height < 1000 && fittedEllipses.size.width < 1000) {
-            std::cout << "Ellipse found with size: " << fittedEllipses.size << std::endl;
+        if(fittedEllipses[i].size.height < 1000 && fittedEllipses[i].size.width < 1000) {
+            std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
             normalEllipses.push_back(fittedEllipses[i]);
         }
     }  
