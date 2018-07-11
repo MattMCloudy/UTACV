@@ -110,22 +110,20 @@ int main(int argc, char **argv)
     std::vector<cv::RotatedRect> coinEllipses;
     for(int i = 0; i < normalEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
-        cv::Point2f center = normalEllipses[i].center;
-        std::cout << "Ellipse " << i << " has center " << center << std::endl;
-        for(int j = 0; j < normalEllipses.size(); j++) {
-            cv::Point2f pts[4];
-            normalEllipses[j].points(pts);
 
-            std::cout << "Points for ellipse " << j << " are ";
-            for(int k = 0; k < 4; k++) {
-                std::cout << pts[k] << " ";
-            }
-            std::cout << std::endl;
-            
-            if(((center.x >= pts[0].x && center.y <= pts[0].y) 
-                && (center.x <= pts[2].x && center.y >= pts[2].y))
-                || ((center.x >= pts[1].x && center.y >= pts[1].y)
-                && (center.x <= pts[4].x && center.y <= pts[4].y)))
+        cv::Point2f center_i = normalEllipses[i].center;
+        cv::Point2f pts_i[4];
+        normalEllipses[i].points(pts)
+        std::cout << "Ellipse " << i << " has center " << center << std::endl;
+        double radius = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) ) / 2.0;
+
+        for(int j = 0; j < normalEllipses.size(); j++) {
+            if (i == j) continue;
+
+            cv::Point2f center_j = normalEllipses[j].center;
+            double distance = sqrt( pow((center_i.x - center_j.x), 2) + pow((center_i.y - center_j.y), 2) );
+
+            if(distance < radius)
             {
                 std::cout << "Eliminated contained ellipse " << i << std::endl;
                 isInsideOtherEllipse = true;
@@ -139,9 +137,9 @@ int main(int argc, char **argv)
     for(int i = 0; i < coinEllipses.size(); i++) {
         cv::Point2f pts[4];
         coinEllipses[i].points(pts);
-        double euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
-        std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
-        ellipseDiameters.push_back(euclideanDistance);
+        double diameter = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
+        std::cout << "Ellipse Diameter: " << diameter << std::endl;
+        ellipseDiameters.push_back(diameter);
     }
 
     enum CoinType {penny, nickel, dime, quarter};
