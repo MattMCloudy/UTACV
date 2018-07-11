@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     for(int i = 0; i < contours.size(); i++)
     {
         // compute an ellipse only if the contour has more than 5 points (the minimum for ellipse fitting)
-        if(contours.at(i).size() > 3)
+        if(contours.at(i).size() > 5)
         {
             fittedEllipses[i] = cv::fitEllipse(contours[i]);
         }
