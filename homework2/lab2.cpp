@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     // locate the image contours (after applying a threshold or canny)
     std::vector<std::vector<cv::Point> > contours;
     cv::findContours(imageEdges, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-    
+
     // draw the contours
     cv::Mat imageContours = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     cv::RNG rand(12345);
@@ -265,6 +265,7 @@ int main(int argc, char **argv)
     cv::imshow("imageGray", imageGray);
     cv::imshow("imageEdges", imageEdges);
     cv::imshow("imageContours", imageContours);
+    cv::imshow("imageRectangles", imageRectangles);
     cv::imshow("imageEllipse", imageEllipse);
     cv::waitKey();
 }
