@@ -142,27 +142,17 @@ int main(int argc, char **argv)
         }
     }
 
-    // eliminate ellipses that are too small
-    std::vector<cv::RotatedRect> largeEllipses;
-    const int minEllipseInliers = 300;
-    for(int i = 0; i < contours.size(); i++) {
-        if(contours.at(i).size() > minEllipseInliers) {
-            std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
-            largeEllipses.push_back(fittedEllipses[i]);
-        }
-    }
-
     // eliminate ellipses that are contained within other ellipses
     std::vector<cv::RotatedRect> coinEllipses;
-    for(int i = 0; i < largeEllipses.size(); i++) {
+    for(int i = 0; i < fittedEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
-        cv::Point2f center = largeEllipses[i].center;
-        for(int j = 0; j < largeEllipses.size(); j++) {
+        cv::Point2f center = fittedEllipses[i].center;
+        for(int j = 0; j < fittedEllipses.size(); j++) {
             if (i == j) continue;
 
             // points are stored bottomLeft, topLeft, topRight, bottomRight
             cv::Point2f pts[4];
-            largeEllipses[j].points(pts);
+            fittedEllipses[j].points(pts);
             if(((center.x > pts[0].x && center.y < pts[0].y) 
                 && (center.x < pts[2].x && center.y > pts[2].y))
                 || ((center.x > pts[1].x && center.y > pts[1].y)
@@ -173,14 +163,24 @@ int main(int argc, char **argv)
             }
         }
 
-        if(!isInsideOtherEllipse) coinEllipses.push_back(largeEllipses[i]);
+        if(!isInsideOtherEllipse) coinEllipses.push_back(fittedEllipses[i]);
     }
+
+    // eliminate ellipses that are too small
+    std::vector<cv::RotatedRect> largeEllipses;
+    const int minEllipseInliers = 300;
+    for(int i = 0; i < contours.size(); i++) {
+        if(contours.at(i).size() > minEllipseInliers) {
+            std::cout << "Ellipse found with size: " << coinEllipses[i].size << std::endl;
+            largeEllipses.push_back(coinEllipses[i]);
+        }
+    }  
 
     // determining the diameter of each ellipse
     std::vector<double> ellipseDiameters;
-    for(int i = 0; i < coinEllipses.size(); i++) {
+    for(int i = 0; i < largeEllipses.size(); i++) {
         cv::Point2f pts[4];
-        coinEllipses[i].points(pts);
+        largeEllipses[i].points(pts);
         double euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
         std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
         ellipseDiameters.push_back(euclideanDistance);
@@ -235,25 +235,25 @@ int main(int argc, char **argv)
 
     // draw the ellipses
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
-    for(int i = 0; i < coinEllipses.size(); i++)
+    for(int i = 0; i < largeEllipses.size(); i++)
     {
         cv::Scalar color;
         switch(static_cast<CoinType>(ellipseAssignments[i])) {
             case penny:
                 color = cv::Scalar(0,0,256);
-                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
                 break;
             case nickel:
                 color = cv::Scalar(0,256,256);
-                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
                 break;
             case dime:
                 color = cv::Scalar(256,0,0);
-                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
                 break;
             case quarter:
                 color = cv::Scalar(0,256,0);
-                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, largeEllipses[i], color, 2);
                 break;
             default:
                 break;
