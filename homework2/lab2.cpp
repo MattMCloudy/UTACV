@@ -112,16 +112,16 @@ int main(int argc, char **argv)
         bool isInsideOtherEllipse = false;
 
         cv::Point2f center_i = normalEllipses[i].center;
-        cv::Point2f pts[4];
-        normalEllipses[i].points(pts);
         std::cout << "Ellipse " << i << " has center " << center_i << std::endl;
-        double radius = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) ) / 2.0;
         double size_i = normalEllipses[i].size.height * normalEllipses[i].size.width;
         for(int j = 0; j < normalEllipses.size(); j++) {
             if (i == j) continue;
 
             cv::Point2f center_j = normalEllipses[j].center;
+            cv::Point2f pts[4];
+            normalEllipses[j].points(pts);
             double distance = sqrt( pow((center_i.x - center_j.x), 2) + pow((center_i.y - center_j.y), 2) );
+            double radius = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) ) / 2.0;
             double size_j = normalEllipses[j].size.height * normalEllipses[j].size.width;
 
             if((distance < radius) && (size_i < size_j))
