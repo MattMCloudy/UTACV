@@ -101,7 +101,7 @@ int main(int argc, char **argv)
     std::vector<cv::RotatedRect> normalEllipses;
     for(int i = 0; i < fittedEllipses.size(); i++) {
         if((fittedEllipses[i].size.height < 1000 && fittedEllipses[i].size.width < 1000)
-            && (fittedEllipses[i].size.height > 0 && fittedEllipses[i].size.width >0)) 
+            && (fittedEllipses[i].size.height > 0 && fittedEllipses[i].size.width > 0)) 
         {
             std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
             normalEllipses.push_back(fittedEllipses[i]);
@@ -113,8 +113,6 @@ int main(int argc, char **argv)
         bool isInsideOtherEllipse = false;
         cv::Point2f center = normalEllipses[i].center;
         for(int j = 0; j < normalEllipses.size(); j++) {
-            if (i == j) continue;
-
             cv::Point2f pts[4];
             normalEllipses[j].points(pts);
             if(((center.x > pts[0].x && center.y < pts[0].y) 
