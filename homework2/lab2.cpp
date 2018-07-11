@@ -100,7 +100,24 @@ int main(int argc, char **argv)
     // locate the image contours (after applying a threshold or canny)
     std::vector<std::vector<cv::Point> > contours;
     cv::findContours(imageEdges, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    
+    // draw the contours
+    cv::Mat imageContours = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
+    cv::RNG rand(12345);
+    for(int i = 0; i < contours.size(); i++)
+    {
+        cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
+        cv::drawContours(imageContours, contours, i, color);
+    }
 
+    // compute minimum area bounding rectangles
+    std::vector<cv::RotatedRect> minAreaRectangles(contours.size());
+    for(int i = 0; i < contours.size(); i++)
+    {
+        // compute a minimum area bounding rectangle for the contour
+        minAreaRectangles[i] = cv::minAreaRect(contours[i]);
+    }
+    
     // draw the rectangles
     cv::Mat imageRectangles = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     for(int i = 0; i < contours.size(); i++)
@@ -112,15 +129,6 @@ int main(int argc, char **argv)
         {
             cv::line(imageRectangles, rectanglePoints[j], rectanglePoints[(j+1) % 4], color);
         }
-    }
-
-    // draw the contours
-    cv::Mat imageContours = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
-    cv::RNG rand(12345);
-    for(int i = 0; i < contours.size(); i++)
-    {
-        cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
-        cv::drawContours(imageContours, contours, i, color);
     }
 
     // fit ellipses to contours containing sufficient inliers
