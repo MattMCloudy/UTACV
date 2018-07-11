@@ -136,23 +136,32 @@ int main(int argc, char **argv)
     for(int i = 0; i < contours.size(); i++)
     {
         // compute an ellipse only if the contour has more than 5 points (the minimum for ellipse fitting)
-        if(contours.at(i).size() > 5)
+        if(contours.at(i).size() > 500)
         {
             fittedEllipses[i] = cv::fitEllipse(contours[i]);
         }
     }
 
+    // eliminate ellipses that are too big
+    std::vector<cv::RotatedRect> normalEllipses;
+    for(int i = 0; i < fittedEllipses.size(); i++) {
+        if(fittedEllipses.size.height < 1000 && fittedEllipses.size.width < 1000) {
+            std::cout << "Ellipse found with size: " << fittedEllipses.size << std::endl;
+            normalEllipses.push_back(fittedEllipses[i]);
+        }
+    }  
+
     // eliminate ellipses that are contained within other ellipses
     std::vector<cv::RotatedRect> coinEllipses;
-    for(int i = 0; i < fittedEllipses.size(); i++) {
+    for(int i = 0; i < normalEllipses.size(); i++) {
         bool isInsideOtherEllipse = false;
-        cv::Point2f center = fittedEllipses[i].center;
-        for(int j = 0; j < fittedEllipses.size(); j++) {
+        cv::Point2f center = normalEllipses[i].center;
+        for(int j = 0; j < normalEllipses.size(); j++) {
             if (i == j) continue;
 
             // points are stored bottomLeft, topLeft, topRight, bottomRight
             cv::Point2f pts[4];
-            fittedEllipses[j].points(pts);
+            normalEllipses[j].points(pts);
             if(((center.x > pts[0].x && center.y < pts[0].y) 
                 && (center.x < pts[2].x && center.y > pts[2].y))
                 || ((center.x > pts[1].x && center.y > pts[1].y)
@@ -163,34 +172,14 @@ int main(int argc, char **argv)
             }
         }
 
-        if(!isInsideOtherEllipse) coinEllipses.push_back(fittedEllipses[i]);
+        if(!isInsideOtherEllipse) coinEllipses.push_back(normalEllipses[i]);
     }
-
-    // eliminate ellipses that are too small
-    std::vector<cv::RotatedRect> largeEllipses;
-    const int minEllipseInliers = 400;
-    for(int i = 0; i < contours.size(); i++) {
-        if(contours.at(i).size() > minEllipseInliers) {
-            std::cout << "Ellipse found with size: " << coinEllipses.at(i).size() << std::endl;
-            largeEllipses.push_back(coinEllipses[i]);
-        }
-    }  
-
-    // eliminate ellipses that are too big
-    std::vector<cv::RotatedRect> normalEllipses;
-    const int maxEllipseInliers = 1000;
-    for(int i = 0; i < largeEllipses.size(); i++) {
-        if(largeEllipses.at(i).size() > maxEllipseInliers) {
-            std::cout << "Ellipse found with size: " << largeEllipses.at(i).size() << std::endl;
-            normalEllipses.push_back(largeEllipses[i]);
-        }
-    }  
 
     // determining the diameter of each ellipse
     std::vector<double> ellipseDiameters;
-    for(int i = 0; i < normalEllipses.size(); i++) {
+    for(int i = 0; i < coinEllipses.size(); i++) {
         cv::Point2f pts[4];
-        normalEllipses[i].points(pts);
+        coinEllipses[i].points(pts);
         double euclideanDistance = sqrt( pow((pts[2].x - pts[0].x), 2) + pow((pts[0].y - pts[2].y), 2) );
         std::cout << "Ellipse Diameter: " << euclideanDistance << std::endl;
         ellipseDiameters.push_back(euclideanDistance);
@@ -245,25 +234,25 @@ int main(int argc, char **argv)
 
     // draw the ellipses
     cv::Mat imageEllipse = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
-    for(int i = 0; i < largeEllipses.size(); i++)
+    for(int i = 0; i < coinEllipses.size(); i++)
     {
         cv::Scalar color;
         switch(static_cast<CoinType>(ellipseAssignments[i])) {
             case penny:
                 color = cv::Scalar(0,0,256);
-                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             case nickel:
                 color = cv::Scalar(0,256,256);
-                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             case dime:
                 color = cv::Scalar(256,0,0);
-                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             case quarter:
                 color = cv::Scalar(0,256,0);
-                cv::ellipse(imageEllipse, normalEllipses[i], color, 2);
+                cv::ellipse(imageEllipse, coinEllipses[i], color, 2);
                 break;
             default:
                 break;
