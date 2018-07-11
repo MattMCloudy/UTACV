@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 
     // eliminate ellipses that are too small
     std::vector<cv::RotatedRect> largeEllipses;
-    const int minEllipseInliers = 250;
+    const int minEllipseInliers = 200;
     for(int i = 0; i < contours.size(); i++) {
         if(contours.at(i).size() > minEllipseInliers) {
             std::cout << "Ellipse found with size: " << fittedEllipses[i].size << std::endl;
