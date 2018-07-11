@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     std::vector<cv::RotatedRect> fittedEllipses;
     for(int i = 0; i < contours.size(); i++)
     {
-        if(contours.at(i).size() > 110)
+        if(contours.at(i).size() > 105)
         {
             fittedEllipses.push_back(cv::fitEllipse(contours[i]));
         }
