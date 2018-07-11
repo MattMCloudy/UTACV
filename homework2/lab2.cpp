@@ -101,6 +101,19 @@ int main(int argc, char **argv)
     std::vector<std::vector<cv::Point> > contours;
     cv::findContours(imageEdges, contours, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
+    // draw the rectangles
+    cv::Mat imageRectangles = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
+    for(int i = 0; i < contours.size(); i++)
+    {
+        cv::Scalar color = cv::Scalar(rand.uniform(0, 256), rand.uniform(0,256), rand.uniform(0,256));
+        cv::Point2f rectanglePoints[4];
+        minAreaRectangles[i].points(rectanglePoints);
+        for(int j = 0; j < 4; j++)
+        {
+            cv::line(imageRectangles, rectanglePoints[j], rectanglePoints[(j+1) % 4], color);
+        }
+    }
+
     // draw the contours
     cv::Mat imageContours = cv::Mat::zeros(imageEdges.size(), CV_8UC3);
     cv::RNG rand(12345);
