@@ -18,7 +18,7 @@
 		-->
   <Input>"images.xml"</Input>
   <!--  If true (non-zero) we flip the input images around the horizontal axis.-->
-  <Input_FlipAroundHorizontalAxis>1</Input_FlipAroundHorizontalAxis>
+  <Input_FlipAroundHorizontalAxis>0</Input_FlipAroundHorizontalAxis>
   
   <!-- Time delay between frames in case of camera. -->
   <Input_Delay>100</Input_Delay>	
