@@ -172,7 +172,7 @@ public:
             view0.copyTo(result);
         }
         else if( atImageList < imageList.size() )
-            result = imread(imageList[atImageList++], IMREAD_GRAYSCALE);
+            result = imread(imageList[atImageList++], IMREAD_COLOR);
 
         return result;
     }
