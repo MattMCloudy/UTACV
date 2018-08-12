@@ -285,19 +285,6 @@ int main(int argc, char** argv)
     //segment the sphere
     const float distanceThreshold = 0.5;
     const int maxIterations = 5000;
-    pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
-    segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
-    std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
-
-    //color the spheres blue
-    for(int i = 0; i < sphere_inliers->indices.size(); i++)
-    {
-        int index = sphere_inliers->indices.at(i);
-        cloudFiltered->points.at(index).r = 0;
-        cloudFiltered->points.at(index).g = 0;
-        cloudFiltered->points.at(index).b = 255;
-    }
-
     // segment a plane
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
     Eigen::Vector3f plane_axis = Eigen::Vector3f::Zero ();
@@ -310,6 +297,19 @@ int main(int argc, char** argv)
         int index = plane_inliers->indices.at(i);
         cloudFiltered->points.at(index).r = 255;
         cloudFiltered->points.at(index).g = 255;
+        cloudFiltered->points.at(index).b = 255;
+    }
+    
+    pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
+    segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
+    std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
+
+    //color the spheres blue
+    for(int i = 0; i < sphere_inliers->indices.size(); i++)
+    {
+        int index = sphere_inliers->indices.at(i);
+        cloudFiltered->points.at(index).r = 0;
+        cloudFiltered->points.at(index).g = 0;
         cloudFiltered->points.at(index).b = 255;
     }
 
