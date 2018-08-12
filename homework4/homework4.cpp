@@ -296,6 +296,29 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).b = 255;
     }
 
+    pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
+    segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, distanceThreshold, maxIterations);
+    std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
+
+    /// color the plane inliers white
+    for(int i = 0; i < box_inliers->indices.size(); i++)
+    {
+        bool point_in_original_plane = false;
+        int box_index = box_inliers->indices.at(i);
+        for (int j = 0; j < plane_inliers->indices.size(); j++) {
+            int plane_index = plane_inliers->indices.at(j);
+
+            if (cloudFiltered->points.at(box_index) == cloudFiltered->points.at(plane_index))
+                point_in_original_plane = true;
+        }
+        
+        if (!point_in_original_plane) {
+            cloudFiltered->points.at(index).r = 0;
+            cloudFiltered->points.at(index).g = 255;
+            cloudFiltered->points.at(index).b = 0;
+        }
+    }
+
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
@@ -307,19 +330,6 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).r = 0;
         cloudFiltered->points.at(index).g = 0;
         cloudFiltered->points.at(index).b = 255;
-    }
-
-    pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
-    segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, distanceThreshold, maxIterations);
-    std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
-
-    /// color the plane inliers white
-    for(int i = 0; i < box_inliers->indices.size(); i++)
-    {
-        int index = box_inliers->indices.at(i);
-        cloudFiltered->points.at(index).r = 0;
-        cloudFiltered->points.at(index).g = 255;
-        cloudFiltered->points.at(index).b = 0;
     }
     
     // get the elapsed time
