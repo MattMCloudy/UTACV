@@ -268,6 +268,24 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
     return top;
 }
 
+int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers) {
+    std::vector<double> box_x_vals;
+    int box_count = 0;
+    for (int i = 0; i < box_inliers->indices.size(); i++) {
+        int index = box_inliers->indices.at(i);
+        box_x_vals.push_back(cloudFiltered->points.at(index).x);
+    }
+
+    std::sort(box_x_vals.begin(), box_x_vals.end());
+
+    prev_val = box_x_vals.begin();
+    for (int i = 1; i < box_x_vals.size(); i++) {
+        if ((box_x_vals.at(i)-prev_val) > 0.01) {
+            box_count++;
+        }
+    }
+    return box_count;
+}
 /***********************************************************************************************************************
 * @brief program entry point
 * @param[in] argc number of command line arguments
@@ -419,7 +437,9 @@ int main(int argc, char** argv)
     top_of_box->g = 0;
     top_of_box->b = 0;
     
-
+    int box_count = getNumberOfBoxes(cloudFiltered, box_inliers);
+    std::cout << "box_count: " << box_count << std::endl;
+    
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
