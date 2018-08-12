@@ -247,7 +247,7 @@ int main(int argc, char** argv)
     segmentPlane(cloudFiltered, inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << inliers->indices.size() << " points" << std::endl;
     
-    /// color the plane inliers green
+    /// color the plane inliers white
     for(int i = 0; i < inliers->indices.size(); i++)
     {
         int index = inliers->indices.at(i);
@@ -260,6 +260,10 @@ int main(int argc, char** argv)
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
 
+    // add a polygon mesh
+    pcl::PolygonMesh::ConstPtr mesh(new pcl::PolygonMesh);
+    CV.addPolygonMesh(mesh)
+    
     // render the scene
     CV.addCloud(cloudFiltered);
     CV.addCoordinateFrame(cloudFiltered->sensor_origin_, cloudFiltered->sensor_orientation_);
