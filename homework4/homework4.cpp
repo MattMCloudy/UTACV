@@ -202,7 +202,7 @@ void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cl
 }
 
 
-pcl::PointXYZRGBA* getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
+pcl::PointXYZRGBA* getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
     double x_max = 0;
     double y_max = 0;
     double z_max = 0;
