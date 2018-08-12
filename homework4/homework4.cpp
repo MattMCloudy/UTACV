@@ -157,7 +157,7 @@ void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, p
     // Segment the largest planar component from the remaining cloud
     seg.setInputCloud(cloudIn);
     seg.segment(*inliers, *coefficients);
-    ax = seg.getAxis()
+    ax = seg.getAxis();
 }
 
 
