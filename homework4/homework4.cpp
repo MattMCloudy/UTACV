@@ -141,7 +141,7 @@ bool openCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudOut, const char* fi
  * @return the number of inliers
  * @author Christopher D. McMurrough
  **********************************************************************************************************************/
-void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, double distanceThreshold, int maxIterations)
+void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, const pcl::Eigen::vector3f &ax, double distanceThreshold, int maxIterations)
 {
     // store the model coefficients
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -150,6 +150,45 @@ void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, p
     pcl::SACSegmentation<pcl::PointXYZRGBA> seg;
     seg.setOptimizeCoefficients(true);
     seg.setModelType(pcl::SACMODEL_PLANE);
+    seg.setMethodType(pcl::SAC_RANSAC);
+    seg.setMaxIterations(maxIterations);
+    seg.setDistanceThreshold(distanceThreshold);
+
+    // Segment the largest planar component from the remaining cloud
+    seg.setInputCloud(cloudIn);
+    seg.segment(*inliers, *coefficients);
+    *ax = seg.getAxis()
+}
+
+
+void segmentSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, double distanceThreshold, int maxIterations)
+{
+    // store the model coefficients
+    pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
+
+    // Create the segmentation object for the planar model and set the parameters
+    pcl::SACSegmentation<pcl::PointXYZRGBA> seg;
+    seg.setOptimizeCoefficients(true);
+    seg.setModelType(pcl::SACMODEL_SPHERE);
+    seg.setMethodType(pcl::SAC_RANSAC);
+    seg.setMaxIterations(maxIterations);
+    seg.setDistanceThreshold(distanceThreshold);
+
+    // Segment the largest planar component from the remaining cloud
+    seg.setInputCloud(cloudIn);
+    seg.segment(*inliers, *coefficients);
+}
+
+void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, const pcl::Eigen::vector3f &ax, double distanceThreshold, int maxIterations)
+{
+    // store the model coefficients
+    pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
+
+    // Create the segmentation object for the planar model and set the parameters
+    pcl::SACSegmentation<pcl::PointXYZRGBA> seg;
+    seg.setOptimizeCoefficients(true);
+    seg.setModelType(pcl::SACMODEL_PARALLEL_PLANE);
+    seg.setAxis(ax);
     seg.setMethodType(pcl::SAC_RANSAC);
     seg.setMaxIterations(maxIterations);
     seg.setDistanceThreshold(distanceThreshold);
@@ -243,26 +282,31 @@ int main(int argc, char** argv)
     // segment a plane
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
-    pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-    segmentPlane(cloudFiltered, inliers, distanceThreshold, maxIterations);
-    std::cout << "Segmentation result: " << inliers->indices.size() << " points" << std::endl;
+    pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
+    pcl::Eigen::vector3f plane_axis(new pcl::Eigen::vector3f);
+    segmentPlane(cloudFiltered, plane_inliers, plane_axis, distanceThreshold, maxIterations);
+    std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
     /// color the plane inliers white
-    for(int i = 0; i < inliers->indices.size(); i++)
+    for(int i = 0; i < plane_inliers->indices.size(); i++)
     {
-        int index = inliers->indices.at(i);
+        int index = plane_inliers->indices.at(i);
         cloudFiltered->points.at(index).r = 255;
         cloudFiltered->points.at(index).g = 255;
         cloudFiltered->points.at(index).b = 255;
     }
 
+    pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
+    segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
+    std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
+
+    pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
+    segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, distanceThreshold, maxIterations);
+    std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
+    
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
-
-    // add a polygon mesh
-    pcl::PolygonMesh::ConstPtr mesh(new pcl::PolygonMesh);
-    CV.addPolygonMesh(mesh);
 
     // render the scene
     CV.addCloud(cloudFiltered);
