@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     }
 
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
-    segmentSphere(cloudFiltered, sphere_inliers, 0.02, 10000);
+    segmentSphere(cloudFiltered, sphere_inliers, 0.05, 10000);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
     //color the spheres blue
