@@ -269,23 +269,23 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
 }
 
 int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers) {
-    std::vector<double> box_x_vals;
+    std::vector<double> box_y_vals;
     int box_count = 0;
     for (int i = 0; i < box_inliers->indices.size(); i++) {
         int index = box_inliers->indices.at(i);
-        box_x_vals.push_back(cloudFiltered->points.at(index).x);
+        box_y_vals.push_back(cloudFiltered->points.at(index).y);
     }
 
-    std::sort(box_x_vals.begin(), box_x_vals.end());
+    std::sort(box_y_vals.begin(), box_y_vals.end());
 
-    double prev_val = box_x_vals.at(0);
-    for (int i = 1; i < box_x_vals.size(); i++) {
-        if ((box_x_vals.at(i)-prev_val) > 0.01) {
+    double prev_val = box_y_vals.at(0);
+    for (int i = 1; i < box_y_vals.size(); i++) {
+        if ((box_y_vals.at(i)-prev_val) > 0.01) {
             box_count++;
         }
-        prev_val = box_x_vals.at(i);
+        prev_val = box_y_vals.at(i);
     }
-    return box_count;
+    return box_count+1;
 }
 /***********************************************************************************************************************
 * @brief program entry point
