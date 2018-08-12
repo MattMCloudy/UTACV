@@ -300,9 +300,27 @@ int main(int argc, char** argv)
     segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
+    /// color the plane inliers white
+    for(int i = 0; i < sphere_inliers->indices.size(); i++)
+    {
+        int index = sphere_inliers->indices.at(i);
+        cloudFiltered->points.at(index).r = 0;
+        cloudFiltered->points.at(index).g = 0;
+        cloudFiltered->points.at(index).b = 255;
+    }
+
     pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
     segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
+
+    /// color the plane inliers white
+    for(int i = 0; i < box_inliers->indices.size(); i++)
+    {
+        int index = box_inliers->indices.at(i);
+        cloudFiltered->points.at(index).r = 0;
+        cloudFiltered->points.at(index).g = 255;
+        cloudFiltered->points.at(index).b = 0;
+    }
     
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
