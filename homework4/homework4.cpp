@@ -157,7 +157,7 @@ void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, p
     // Segment the largest planar component from the remaining cloud
     seg.setInputCloud(cloudIn);
     seg.segment(*inliers, *coefficients);
-    *ax = seg.getAxis()
+    ax = seg.getAxis()
 }
 
 
@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
-    Eigen::vector3f plane_axis(new pcl::Eigen::vector3f);
+    Eigen::vector3f plane_axis(new Eigen::vector3f);
     segmentPlane(cloudFiltered, plane_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
