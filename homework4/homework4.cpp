@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
-    Eigen::Vector3f plane_axis(new Eigen::Vector3f);
+    Eigen::Vector3f plane_axis = Eigen::Vector3f::Zero ();
     segmentPlane(cloudFiltered, plane_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
