@@ -285,11 +285,12 @@ int main(int argc, char** argv)
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, 0.2, 10000);
 
-    //color the spheres blue
+    // color the spheres blue
     for(int i = 0; i < sphere_inliers->indices.size(); i++)
     {
         int index = sphere_inliers->indices.at(i);
 
+        // skip sphere inliers with z>1
         if (cloudFiltered->points.at(index).z > 1.0)
             continue;
 
@@ -342,6 +343,10 @@ int main(int argc, char** argv)
     double z_max = 0;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
+
+        if (cloudFiltered->points.at(index).z > 1.0)
+            continue;
+            
         std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
         std::cout << "y: " << cloudFiltered->points.at(index).y << std::endl;
         std::cout << "z: " << cloudFiltered->points.at(index).z << std::endl;
