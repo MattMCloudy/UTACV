@@ -336,7 +336,7 @@ int main(int argc, char** argv)
     int x_max = 0;
     int y_max = 0;
     int z_max = 0;
-    for (int i = 0; i < sphere_inliers->size(); i++) {
+    for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
         std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
         std::cout << "y: " << cloudFiltered->points.at(index).y << std::endl;
