@@ -293,7 +293,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 }
 
 int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
-    td::vector<double> sphere_y_vals;
+    std::vector<double> sphere_y_vals;
     int sphere_count = 0;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
