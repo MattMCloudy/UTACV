@@ -201,6 +201,40 @@ void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cl
     seg.segment(*inliers, *coefficients);
 }
 
+
+pcl::PointCloud<pcl::PointXYZRGBA> getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
+    double x_max = 0;
+    double y_max = 0;
+    double z_max = 0;
+    pcl::PointCloud<pcl::PointXYZRGBA> top;
+    for (int i = 0; i < sphere_inliers->indices.size(); i++) {
+        int index = sphere_inliers->indices.at(i);
+
+        if (cloudFiltered->points.at(index).z > 1.0)
+            continue;
+
+        std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
+        std::cout << "y: " << cloudFiltered->points.at(index).y << std::endl;
+        std::cout << "z: " << cloudFiltered->points.at(index).z << std::endl;
+
+        if (cloudFiltered->points.at(index).x > x_max)
+            x_max = cloudFiltered->points.at(index).x;
+
+        if (cloudFiltered->points.at(index).y > y_max)
+            y_max = cloudFiltered->points.at(index).y;
+
+        if (cloudFiltered->points.at(index).z > z_max) {
+            z_max = cloudFiltered->points.at(index).z;
+            top = cloudFiltered->points.at(index);
+        }
+    }
+    std::cout << "x_max: " << x_max << std::endl;
+    std::cout << "y_max: " << y_max << std::endl;
+    std::cout << "z_max: " << z_max << std::endl;
+
+    return top;
+}
+
 /***********************************************************************************************************************
 * @brief program entry point
 * @param[in] argc number of command line arguments
@@ -337,33 +371,11 @@ int main(int argc, char** argv)
         }
     }
 
-    // determine the farthest point in the sphere
-    double x_max = 0;
-    double y_max = 0;
-    double z_max = 0;
-    for (int i = 0; i < sphere_inliers->indices.size(); i++) {
-        int index = sphere_inliers->indices.at(i);
-
-        if (cloudFiltered->points.at(index).z > 1.0)
-            continue;
-            
-        std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
-        std::cout << "y: " << cloudFiltered->points.at(index).y << std::endl;
-        std::cout << "z: " << cloudFiltered->points.at(index).z << std::endl;
-
-        if (cloudFiltered->points.at(index).x > x_max)
-            x_max = cloudFiltered->points.at(index).x;
-
-        if (cloudFiltered->points.at(index).y > y_max)
-            y_max = cloudFiltered->points.at(index).y;
-
-        if (cloudFiltered->points.at(index).z > z_max)
-            z_max = cloudFiltered->points.at(index).z;
-    }
-    std::cout << "x_max: " << x_max << std::endl;
-    std::cout << "y_max: " << y_max << std::endl;
-    std::cout << "z_max: " << z_max << std::endl;
-
+    pcl::PointCloud<pcl::PointXYZRGBA> top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers);
+    std::cout << "top_x: " << top_of_sphere.x << std::endl;
+    std::cout << "top_y: " << top_of_sphere.y << std::endl;
+    std::cout << "top_z: " << top_of_sphere.z << std::endl;
+    
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
