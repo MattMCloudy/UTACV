@@ -307,7 +307,7 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
 
     double prev_val = sphere_y_vals.at(0);
     for (int i = 1; i < sphere_y_vals.size(); i++) {
-        if ((sphere_y_vals.at(i)-prev_val) > 0.005) {
+        if ((sphere_y_vals.at(i)-prev_val) > 0.05) {
             std:cout << sphere_y_vals.at(i)-prev_val << std::endl;
             sphere_count++;
         }
