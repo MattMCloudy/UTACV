@@ -308,7 +308,7 @@ int main(int argc, char** argv)
         for (int j = 0; j < plane_inliers->indices.size(); j++) {
             int plane_index = plane_inliers->indices.at(j);
 
-            if (cloudFiltered->points.at(box_index) == cloudFiltered->points.at(plane_index))
+            if (pcl::Comparator<cloudFiltered>::compare(box_index, plane_index))
                 point_in_original_plane = true;
         }
         
