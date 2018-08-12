@@ -301,6 +301,8 @@ int main(int argc, char** argv)
     std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
 
     /// color the plane inliers white
+    pcl::Comparator<pcl::PointXYZRGBA> comparator;
+    comparator.setInputCloud(cloudFiltered);
     for(int i = 0; i < box_inliers->indices.size(); i++)
     {
         bool point_in_original_plane = false;
@@ -308,7 +310,7 @@ int main(int argc, char** argv)
         for (int j = 0; j < plane_inliers->indices.size(); j++) {
             int plane_index = plane_inliers->indices.at(j);
 
-            if (pcl::Comparator<cloudFiltered>::compare(box_index, plane_index))
+            if (comparator.compare(box_index, plane_index))
                 point_in_original_plane = true;
         }
         
