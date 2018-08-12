@@ -269,9 +269,9 @@ int main(int argc, char** argv)
     for(int i = 0; i < clusterIndices.size(); i++)
     {
         // create a random color for this cluster
-        int r = rand() % 256;
-        int g = rand() % 256;
-        int b = rand() % 256;
+        int r = 0;
+        int g = 255;
+        int b = 255;
 
         // iterate through the cluster points
         for(int j = 0; j < clusterIndices.at(i).indices.size(); j++)
@@ -282,13 +282,14 @@ int main(int argc, char** argv)
         }
     }
 
+    //segment the sphere
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
-    /// color the plane inliers white
+    //color the spheres blue
     for(int i = 0; i < sphere_inliers->indices.size(); i++)
     {
         int index = sphere_inliers->indices.at(i);
@@ -303,7 +304,7 @@ int main(int argc, char** argv)
     segmentPlane(cloudFiltered, plane_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
-    /// color the plane inliers white
+    /// color the plane white
     for(int i = 0; i < plane_inliers->indices.size(); i++)
     {
         int index = plane_inliers->indices.at(i);
@@ -312,24 +313,29 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).b = 255;
     }
 
+    //segment the box tops
     pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
     segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
 
-    /// color the plane inliers white
+    // color the box tops green
     for(int i = 0; i < box_inliers->indices.size(); i++)
     {
-        bool point_in_original_plane = false;
+        bool point_in_other_planes = false;
         int box_index = box_inliers->indices.at(i);
         for (int j = 0; j < plane_inliers->indices.size(); j++) {
             int plane_index = plane_inliers->indices.at(j);
-
-            if (getPointDistance(cloudFiltered->points.at(box_index), 
-                cloudFiltered->points.at(plane_index)) == 0)
-                point_in_original_plane = true;
+            for (int k = 0; k < sphere_inliers->indices.size(); k++) {
+                int sphere_index = sphere_inliers->indices.at(k);
+                if (getPointDistance(cloudFiltered->points.at(box_index), 
+                                    cloudFiltered->points.at(plane_index)) == 0
+                    || getPointDistance(cloudFiltered->points.at(box_index),
+                                    cloudFiltered->points.at(sphere_index)) == 0)
+                point_in_other_planes = true;
+            }
         }
         
-        if (!point_in_original_plane) {
+        if (!point_in_other_planes) {
             cloudFiltered->points.at(box_index).r = 0;
             cloudFiltered->points.at(box_index).g = 255;
             cloudFiltered->points.at(box_index).b = 0;
