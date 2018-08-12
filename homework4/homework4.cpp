@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     }
 
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
-    segmentSphere(cloudFiltered, sphere_inliers, 0.1, 10000);
+    segmentSphere(cloudFiltered, sphere_inliers, 0.2, 10000);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
     //color the spheres blue
@@ -325,14 +325,6 @@ int main(int argc, char** argv)
 
             if (getPointDistance(cloudFiltered->points.at(box_index), 
                 cloudFiltered->points.at(plane_index)) == 0)
-                point_in_other_planes = true;
-        }
-
-        for (int j = 0; j < sphere_inliers->indices.size(); j++) {
-            int sphere_index = sphere_inliers->indices.at(j);
-
-            if (getPointDistance(cloudFiltered->points.at(box_index), 
-                cloudFiltered->points.at(sphere_index)) == 0)
                 point_in_other_planes = true;
         }
         
