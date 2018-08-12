@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     }
 
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
-    segmentSphere(cloudFiltered, sphere_inliers, 0.05, 10000);
+    segmentSphere(cloudFiltered, sphere_inliers, 0.1, 10000);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
     //color the spheres blue
@@ -312,7 +312,7 @@ int main(int argc, char** argv)
 
     //segment the box tops
     pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
-    segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, 0.06, 10000);
+    segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, 0.07, 10000);
     std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
 
     // color the box tops green
