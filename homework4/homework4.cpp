@@ -276,6 +276,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
         if (cloudFiltered->points.at(index).z > 1.0)
             continue;
 
+        box_count=1;
         box_y_vals.push_back(cloudFiltered->points.at(index).y);
     }
 
@@ -283,13 +284,14 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     double prev_val = box_y_vals.at(0);
     for (int i = 1; i < box_y_vals.size(); i++) {
+        std::cout << box_y_vals.at(i) << std::endl;
         if ((box_y_vals.at(i)-prev_val) > 0.05) {
-            std:cout << box_y_vals.at(i)-prev_val << std::endl;
+            std:cout << "FOUND ONE " << box_y_vals.at(i)-prev_val << std::endl;
             box_count++;
         }
         prev_val = box_y_vals.at(i);
     }
-    return box_count+1;
+    return box_count;
 }
 
 int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
@@ -299,7 +301,8 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
         int index = sphere_inliers->indices.at(i);
         if (cloudFiltered->points.at(index).z > 1.0)
             continue;
-            
+        
+        sphere_count=1;
         sphere_y_vals.push_back(cloudFiltered->points.at(index).y);
     }
 
@@ -307,13 +310,14 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
 
     double prev_val = sphere_y_vals.at(0);
     for (int i = 1; i < sphere_y_vals.size(); i++) {
+        std::cout << sphere_y_vals.at(i) << std::endl;
         if ((sphere_y_vals.at(i)-prev_val) > 0.05) {
-            std:cout << sphere_y_vals.at(i)-prev_val << std::endl;
+            std:cout << "FOUND ONE " << sphere_y_vals.at(i)-prev_val << std::endl;
             sphere_count++;
         }
         prev_val = sphere_y_vals.at(i);
     }
-    return sphere_count+1;
+    return sphere_count;
 }
 
 /***********************************************************************************************************************
