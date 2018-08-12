@@ -283,7 +283,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
         if ((box_x_vals.at(i)-prev_val) > 0.01) {
             box_count++;
         }
-        prev_val = box_count.at(i);
+        prev_val = box_x_vals.at(i);
     }
     return box_count;
 }
