@@ -206,7 +206,7 @@ pcl::PointXYZRGBA getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::Const
     double x_max = 0;
     double y_max = 0;
     double z_max = 0;
-    pcl::PointXYZRGBA top;
+    int top_index = 0;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
@@ -225,14 +225,18 @@ pcl::PointXYZRGBA getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::Const
 
         if (cloudFiltered->points.at(index).z > z_max) {
             z_max = cloudFiltered->points.at(index).z;
-            top = cloudFiltered->points.at(index);
+            top_index = index;
         }
     }
     std::cout << "x_max: " << x_max << std::endl;
     std::cout << "y_max: " << y_max << std::endl;
     std::cout << "z_max: " << z_max << std::endl;
 
-    return top;
+    cloudFiltered->points.at(top_index).r = 255;
+    cloudFiltered->points.at(top_index).g = 0;
+    cloudFiltered->points.at(top_index).b = 0;
+    
+    return cloudFiltered->points.at(top_index);
 }
 
 /***********************************************************************************************************************
