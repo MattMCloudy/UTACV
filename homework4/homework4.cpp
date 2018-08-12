@@ -141,7 +141,7 @@ bool openCloud(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudOut, const char* fi
  * @return the number of inliers
  * @author Christopher D. McMurrough
  **********************************************************************************************************************/
-void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, const Eigen::vector3f &ax, double distanceThreshold, int maxIterations)
+void segmentPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, Eigen::Vector3f &ax, double distanceThreshold, int maxIterations)
 {
     // store the model coefficients
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -179,7 +179,7 @@ void segmentSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, 
     seg.segment(*inliers, *coefficients);
 }
 
-void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, const Eigen::vector3f &ax, double distanceThreshold, int maxIterations)
+void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudIn, pcl::PointIndices::Ptr &inliers, const Eigen::Vector3f &ax, double distanceThreshold, int maxIterations)
 {
     // store the model coefficients
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
-    Eigen::vector3f plane_axis(new Eigen::vector3f);
+    Eigen::Vector3f plane_axis(new Eigen::Vector3f);
     segmentPlane(cloudFiltered, plane_inliers, plane_axis, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
