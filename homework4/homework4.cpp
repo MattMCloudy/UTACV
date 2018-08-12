@@ -262,8 +262,8 @@ int main(int argc, char** argv)
 
     // add a polygon mesh
     pcl::PolygonMesh::ConstPtr mesh(new pcl::PolygonMesh);
-    CV.addPolygonMesh(mesh)
-    
+    CV.addPolygonMesh(mesh);
+
     // render the scene
     CV.addCloud(cloudFiltered);
     CV.addCoordinateFrame(cloudFiltered->sensor_origin_, cloudFiltered->sensor_orientation_);
