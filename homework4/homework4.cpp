@@ -336,7 +336,7 @@ int main(int argc, char** argv)
     int x_max = 0;
     int y_max = 0;
     int z_max = 0;
-    for (int i = 0; i < sphere_inliers.size(); i++) {
+    for (int i = 0; i < sphere_inliers->size(); i++) {
         int index = sphere_inliers->indices.at(i);
         std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
         std::cout << "y: " << cloudFiltered->points.at(index).y << std::endl;
@@ -354,7 +354,7 @@ int main(int argc, char** argv)
     std::cout << "x_max: " << x_max << std::endl;
     std::cout << "y_max: " << y_max << std::endl;
     std::cout << "z_max: " << z_max << std::endl;
-    
+
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
