@@ -284,7 +284,6 @@ int main(int argc, char** argv)
 
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, 0.2, 10000);
-    std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
 
     //color the spheres blue
     for(int i = 0; i < sphere_inliers->indices.size(); i++)
@@ -295,11 +294,10 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).b = 255;
     }
 
-// segment a plane
+    // segment a plane
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
     Eigen::Vector3f plane_axis = Eigen::Vector3f::Zero ();
     segmentPlane(cloudFiltered, plane_inliers, plane_axis, 0.0254, 5000);
-    std::cout << "Segmentation result: " << plane_inliers->indices.size() << " points" << std::endl;
     
     /// color the plane white
     for(int i = 0; i < plane_inliers->indices.size(); i++)
@@ -313,7 +311,6 @@ int main(int argc, char** argv)
     //segment the box tops
     pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
     segmentParallelPlane(cloudFiltered, box_inliers, plane_axis, 0.07, 10000);
-    std::cout << "Segmentation result: " << box_inliers->indices.size() << " points" << std::endl;
 
     // color the box tops green
     for(int i = 0; i < box_inliers->indices.size(); i++)
