@@ -206,7 +206,7 @@ pcl::PointCloud<pcl::PointXYZRGBA>::Ptr getTopOfSphere(const pcl::PointCloud<pcl
     double x_max = 0;
     double y_max = 0;
     double z_max = 0;
-    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr top = new(pcl::PointCloud<pcl::PointXYZRGBA>);
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr top;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
