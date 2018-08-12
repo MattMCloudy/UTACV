@@ -232,7 +232,7 @@ int main(int argc, char** argv)
         int b = rand() % 256;
 
         // iterate through the cluster points
-        for(int j = 0; j < clusterIndices.at(i).indices.size(); fj++)
+        for(int j = 0; j < clusterIndices.at(i).indices.size(); j++)
         {
             cloudFiltered->points.at(clusterIndices.at(i).indices.at(j)).r = r;
             cloudFiltered->points.at(clusterIndices.at(i).indices.at(j)).g = g;
@@ -244,7 +244,7 @@ int main(int argc, char** argv)
     const float distanceThreshold = 0.0254;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-    segmentPlane(cloud, inliers, distanceThreshold, maxIterations);
+    segmentPlane(cloudFiltered, inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << inliers->indices.size() << " points" << std::endl;
     
     /// color the plane inliers green
