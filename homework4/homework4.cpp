@@ -207,7 +207,7 @@ pcl::PointXYZRGBA& getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::Cons
     double y_max = 0;
     double z_max = 0;
     double z_min = 1;
-    pcl::PointXYZRGBA::Ptr top;
+    pcl::PointXYZRGBA& top;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
@@ -380,9 +380,9 @@ int main(int argc, char** argv)
     std::cout << "top_x: " << top_of_sphere->x << std::endl;
     std::cout << "top_y: " << top_of_sphere->y << std::endl;
     std::cout << "top_z: " << top_of_sphere->z << std::endl;
-    top->r = 255;
-    top->g = 0;
-    top->b = 0;
+    top_of_sphere->r = 255;
+    top_of_sphere->g = 0;
+    top_of_sphere->b = 0;
 
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
