@@ -278,7 +278,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     std::sort(box_x_vals.begin(), box_x_vals.end());
 
-    prev_val = box_x_vals.begin();
+    double prev_val = box_x_vals.begin();
     for (int i = 1; i < box_x_vals.size(); i++) {
         if ((box_x_vals.at(i)-prev_val) > 0.01) {
             box_count++;
@@ -439,7 +439,7 @@ int main(int argc, char** argv)
     
     int box_count = getNumberOfBoxes(cloudFiltered, box_inliers);
     std::cout << "box_count: " << box_count << std::endl;
-    
+
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
     std::cout << elapsedTime << " seconds passed " << std::endl;
