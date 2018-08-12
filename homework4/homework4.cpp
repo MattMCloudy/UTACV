@@ -255,9 +255,9 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
             z_max = cloudFiltered->points.at(index).z;
         }
 
-        if (cloudFilter->points.at(index).z < z_min) {
+        if (cloudFiltered->points.at(index).z < z_min) {
             z_min = cloudFiltered->points.at(index).z;
-            top = cloudFiltered->points.at(index);
+            top = &(cloudFiltered->points.at(index));
         }
 
         std::cout << "x_max: " << x_max << std::endl;
