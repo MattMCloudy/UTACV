@@ -273,6 +273,9 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
     int box_count = 0;
     for (int i = 0; i < box_inliers->indices.size(); i++) {
         int index = box_inliers->indices.at(i);
+        if (cloudFiltered->points.at(index).z > 1.0)
+            continue;
+            
         box_y_vals.push_back(cloudFiltered->points.at(index).y);
     }
 
