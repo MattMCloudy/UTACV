@@ -202,11 +202,12 @@ void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cl
 }
 
 
-pcl::PointXYZRGBA getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
+pcl::PointXYZRGBA::Ptr getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
     double x_max = 0;
     double y_max = 0;
     double z_max = 0;
-    int top_index = 0;
+    double z_min = 1;
+    pcl::PointXYZRGBA::Ptr top;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
@@ -225,18 +226,18 @@ pcl::PointXYZRGBA getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudF
 
         if (cloudFiltered->points.at(index).z > z_max) {
             z_max = cloudFiltered->points.at(index).z;
-            top_index = index;
+        }
+
+        if (cloudFiltered->points.at(index).z < z_min) {
+            z_min = cloudFiltered->points.at(index).z;
+            top = &(cloudFiltered->points.at(index));
         }
     }
     std::cout << "x_max: " << x_max << std::endl;
     std::cout << "y_max: " << y_max << std::endl;
     std::cout << "z_max: " << z_max << std::endl;
 
-    cloudFiltered->points.at(top_index).r = 255;
-    cloudFiltered->points.at(top_index).g = 0;
-    cloudFiltered->points.at(top_index).b = 0;
-    
-    return cloudFiltered->points.at(top_index);
+    return top;
 }
 
 /***********************************************************************************************************************
@@ -375,10 +376,13 @@ int main(int argc, char** argv)
         }
     }
 
-    pcl::PointXYZRGBA top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers);
-    std::cout << "top_x: " << top_of_sphere.x << std::endl;
-    std::cout << "top_y: " << top_of_sphere.y << std::endl;
-    std::cout << "top_z: " << top_of_sphere.z << std::endl;
+    pcl::PointXYZRGBA::Ptr top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers);
+    std::cout << "top_x: " << top_of_sphere->x << std::endl;
+    std::cout << "top_y: " << top_of_sphere->y << std::endl;
+    std::cout << "top_z: " << top_of_sphere->z << std::endl;
+    top->r = 255;
+    top->g = 0;
+    top->b = 0;
 
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
