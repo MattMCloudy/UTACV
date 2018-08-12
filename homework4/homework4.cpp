@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     }
 
     //segment the sphere
-    const float distanceThreshold = 0.5;
+    const float distanceThreshold = 0.03;
     const int maxIterations = 5000;
     // segment a plane
     pcl::PointIndices::Ptr plane_inliers(new pcl::PointIndices);
@@ -299,7 +299,7 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).g = 255;
         cloudFiltered->points.at(index).b = 255;
     }
-    
+
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
     std::cout << "Segmentation result: " << sphere_inliers->indices.size() << " points" << std::endl;
