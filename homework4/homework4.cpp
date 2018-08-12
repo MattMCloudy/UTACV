@@ -288,6 +288,11 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
     }
     return box_count+1;
 }
+
+int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
+    return getNumberOfBoxes(cloudFiltered, sphere_inliers);
+}
+
 /***********************************************************************************************************************
 * @brief program entry point
 * @param[in] argc number of command line arguments
@@ -438,9 +443,16 @@ int main(int argc, char** argv)
     top_of_box->r = 255;
     top_of_box->g = 0;
     top_of_box->b = 0;
+
+    int sphere_count = getNumberOfSpheres(cloudFiltered, sphere_inliers);
+    std::cout << "sphere_count: " << sphere_count << std::endl;
     
     int box_count = getNumberOfBoxes(cloudFiltered, box_inliers);
     std::cout << "box_count: " << box_count << std::endl;
+
+
+    // assuming boxes are all the same size...
+
 
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
