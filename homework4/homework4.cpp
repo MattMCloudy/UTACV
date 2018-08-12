@@ -313,9 +313,9 @@ int main(int argc, char** argv)
         }
         
         if (!point_in_original_plane) {
-            cloudFiltered->points.at(index).r = 0;
-            cloudFiltered->points.at(index).g = 255;
-            cloudFiltered->points.at(index).b = 0;
+            cloudFiltered->points.at(box_index).r = 0;
+            cloudFiltered->points.at(box_index).g = 255;
+            cloudFiltered->points.at(box_index).b = 0;
         }
     }
 
