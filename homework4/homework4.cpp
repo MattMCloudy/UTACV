@@ -56,7 +56,7 @@ void pointPickingCallback(const pcl::visualization::PointPickingEvent& event, vo
     pickCount++;
 }
 
-function getPointDistance(pcl::PointXYZRGBA p1, pcl::PointXYZRGBA p2) {
+double getPointDistance(pcl::PointXYZRGBA p1, pcl::PointXYZRGBA p2) {
     return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
 }
 /***********************************************************************************************************************
