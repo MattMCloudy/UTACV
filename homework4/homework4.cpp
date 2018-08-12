@@ -289,6 +289,10 @@ int main(int argc, char** argv)
     for(int i = 0; i < sphere_inliers->indices.size(); i++)
     {
         int index = sphere_inliers->indices.at(i);
+
+        if (cloudFiltered->points.at(index).z > 1.0)
+            continue;
+
         cloudFiltered->points.at(index).r = 0;
         cloudFiltered->points.at(index).g = 0;
         cloudFiltered->points.at(index).b = 255;
