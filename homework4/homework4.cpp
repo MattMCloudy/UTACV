@@ -325,14 +325,18 @@ int main(int argc, char** argv)
         int box_index = box_inliers->indices.at(i);
         for (int j = 0; j < plane_inliers->indices.size(); j++) {
             int plane_index = plane_inliers->indices.at(j);
-            for (int k = 0; k < sphere_inliers->indices.size(); k++) {
-                int sphere_index = sphere_inliers->indices.at(k);
-                if (getPointDistance(cloudFiltered->points.at(box_index), 
-                                    cloudFiltered->points.at(plane_index)) == 0
-                    || getPointDistance(cloudFiltered->points.at(box_index),
-                                    cloudFiltered->points.at(sphere_index)) == 0)
+
+            if (getPointDistance(cloudFiltered->points.at(box_index), 
+                cloudFiltered->points.at(plane_index)) == 0)
                 point_in_other_planes = true;
-            }
+        }
+
+        for (int j = 0; j < sphere_inliers->indices.size(); j++) {
+            int sphere_index = sphere_inliers->indices.at(j);
+
+            if (getPointDistance(cloudFiltered->points.at(box_index), 
+                cloudFiltered->points.at(sphere_index)) == 0)
+                point_in_other_planes = true;
         }
         
         if (!point_in_other_planes) {
