@@ -269,9 +269,9 @@ int main(int argc, char** argv)
     for(int i = 0; i < clusterIndices.size(); i++)
     {
         // create a random color for this cluster
-        int r = 0;
+        int r = 255;
         int g = 255;
-        int b = 255;
+        int b = 0;
 
         // iterate through the cluster points
         for(int j = 0; j < clusterIndices.at(i).indices.size(); j++)
