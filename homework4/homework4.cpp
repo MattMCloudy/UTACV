@@ -202,11 +202,11 @@ void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cl
 }
 
 
-pcl::PointCloud<pcl::PointXYZRGBA> getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
+pcl::PointXYZRGBA getTopOfSphere(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers) {
     double x_max = 0;
     double y_max = 0;
     double z_max = 0;
-    pcl::PointCloud<pcl::PointXYZRGBA> top;
+    pcl::PointXYZRGBA top;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
@@ -371,7 +371,7 @@ int main(int argc, char** argv)
         }
     }
 
-    pcl::PointCloud<pcl::PointXYZRGBA> top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers);
+    pcl::PointXYZRGBA top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers);
     std::cout << "top_x: " << top_of_sphere.x << std::endl;
     std::cout << "top_y: " << top_of_sphere.y << std::endl;
     std::cout << "top_z: " << top_of_sphere.z << std::endl;
