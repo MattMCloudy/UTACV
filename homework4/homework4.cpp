@@ -278,7 +278,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     std::sort(box_x_vals.begin(), box_x_vals.end());
 
-    double prev_val = box_x_vals.begin();
+    double prev_val = box_x_vals.at(0);
     for (int i = 1; i < box_x_vals.size(); i++) {
         if ((box_x_vals.at(i)-prev_val) > 0.01) {
             box_count++;
