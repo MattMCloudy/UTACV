@@ -333,9 +333,9 @@ int main(int argc, char** argv)
     }
 
     // determine the farthest point in the sphere
-    int x_max = 0;
-    int y_max = 0;
-    int z_max = 0;
+    double x_max = 0;
+    double y_max = 0;
+    double z_max = 0;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
         std::cout << "x: " << cloudFiltered->points.at(index).x << std::endl;
