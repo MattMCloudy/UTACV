@@ -283,7 +283,7 @@ int main(int argc, char** argv)
     }
 
     //segment the sphere
-    const float distanceThreshold = 0.0254;
+    const float distanceThreshold = 0.5;
     const int maxIterations = 5000;
     pcl::PointIndices::Ptr sphere_inliers(new pcl::PointIndices);
     segmentSphere(cloudFiltered, sphere_inliers, distanceThreshold, maxIterations);
