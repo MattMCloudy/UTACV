@@ -494,7 +494,7 @@ int main(int argc, char** argv)
 
     pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers, plane_z_val);
     if (top_of_sphere != NULL) {
-        std::cout << "top of sphere found!" << std::endl;
+        std::cout << "top of sphere found!" << *top_of_sphere << std::endl;
         std::cout << "top_x: " << top_of_sphere->x << std::endl;
         std::cout << "top_y: " << top_of_sphere->y << std::endl;
         std::cout << "top_z: " << top_of_sphere->z << std::endl;
