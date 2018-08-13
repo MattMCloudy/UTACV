@@ -407,7 +407,7 @@ int main(int argc, char** argv)
     {
         int index = sphere_inliers->indices.at(i);
 
-        // skip sphere inliers with z>1
+        // skip sphere inliers with z>0.7
         if (cloudFiltered->points.at(index).z > 0.7)
             continue;
 
@@ -432,6 +432,16 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).g = 255;
         cloudFiltered->points.at(index).b = 255;
 
+        // eliminate occurences of plane in sphere (plane wins)
+        for (int j = 0; j < sphere_inliers.size(); j++) {
+            int sphere_index = sphere_inliers->indices.at(j);
+            if (getPointDistance(cloudFiltered->points.at(sphere_index),
+                cloudFiltered->points.at(index)) == 0)
+            {
+                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+sphere_index);
+            }
+        }
+
         // find the place in the center plane where x and y are closest to center, and choose
         // that as the basis for max z value.
         if ((std::abs(cloudFiltered->points.at(index).x) < min_x_diff)
@@ -439,7 +449,7 @@ int main(int argc, char** argv)
             plane_z_val = cloudFiltered->points.at(index).z;
         }
     }
-    
+
     std::cout << "Max Z: " << plane_z_val << std::endl;
 
     //segment the box tops
@@ -449,6 +459,8 @@ int main(int argc, char** argv)
     // color the box tops green
     for(int i = 0; i < box_inliers->indices.size(); i++)
     {
+
+        // eliminate occurences of plane in box (plane wins)
         bool point_in_other_planes = false;
         int box_index = box_inliers->indices.at(i);
         for (int j = 0; j < plane_inliers->indices.size(); j++) {
@@ -456,7 +468,21 @@ int main(int argc, char** argv)
 
             if (getPointDistance(cloudFiltered->points.at(box_index), 
                 cloudFiltered->points.at(plane_index)) == 0)
+            {
                 point_in_other_planes = true;
+                box_inliers->indices.erase(box_inliers->indices.begin()+box_index);
+            }
+        }
+
+        // eliminate occurences of box in sphere (box wins)
+        for (int j = 0; j < sphere_inliers->indices.size(); j++) {
+            int sphere_index = sphere_inliers->indices.at(j);
+
+            if(getPointDistance(cloudFiltered->points.at(box_index),
+                cloudFiltered->points.at(sphere_index)) == 0)
+            {
+                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+sphere_index);
+            }
         }
         
         if (!point_in_other_planes) {
