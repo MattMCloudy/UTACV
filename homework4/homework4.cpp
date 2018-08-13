@@ -221,7 +221,7 @@ pcl::PointXYZRGBA* getTopOfCluster(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &clou
 }
 
 void printDimensions(pcl::PointXYZRGBA* top_of_object, double plane_z_val, float size_m, string obj_name) {
-    obj_size_in = (top_of_object->z - plane_z_val) * 39.3701 * size_m;
+    double obj_size_in = (top_of_object->z - plane_z_val) * 39.3701 * size_m;
     std::cout << setprecision(1) << obj_name << " - " << obj_size_in << "\"" << std::endl;
 }
 
