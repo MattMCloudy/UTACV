@@ -324,6 +324,36 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
     return sphere_count;
 }
 
+int getNumberOfBoxesX(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers, double max_z) {
+    std::vector<double> box_x_vals;
+    int box_count = 0;
+
+    if (box_inliers->indices.size() == 0)
+        return box_count;
+
+    for (int i = 0; i < box_inliers->indices.size(); i++) {
+        int index = box_inliers->indices.at(i);
+        if (cloudFiltered->points.at(index).z > max_z)
+            continue;
+
+        box_count=1;
+        box_x_vals.push_back(cloudFiltered->points.at(index).x);
+    }
+
+    std::sort(box_y_vals.begin(), box_y_vals.end());
+
+    double prev_val = box_x_vals.at(0);
+    for (int i = 1; i < box_x_vals.size(); i++) {
+        if ((box_x_vals.at(i)-prev_val) > 0.008
+            && (box_x_vals.at(i)-prev_val) < 0.1) {
+            std:cout << "FOUND ONE " << box_x_vals.at(i)-prev_val << std::endl;
+            box_count++;
+        }
+        prev_val = box_x_vals.at(i);
+    }
+    return box_count;
+}
+
 /***********************************************************************************************************************
 * @brief program entry point
 * @param[in] argc number of command line arguments
@@ -523,7 +553,9 @@ int main(int argc, char** argv)
     int sphere_count = getNumberOfSpheres(cloudFiltered, sphere_inliers, plane_z_val);
     std::cout << "sphere_count: " << sphere_count << std::endl;
     
-    int box_count = getNumberOfBoxes(cloudFiltered, box_inliers, plane_z_val);
+    int box_count = (getNumberOfBoxes(cloudFiltered, box_inliers, plane_z_val) > getNumberOfBoxesX(cloudFiltered, box_inliers, plane_z_val))
+                    ? getNumberOfBoxes(cloudFiltered, box_inliers, plane_z_val)
+                    : getNumberOfBoxesX(cloudFiltered, box_inliers, plane_z_val);
     std::cout << "box_count: " << box_count << std::endl;
 
 
