@@ -434,6 +434,7 @@ int main(int argc, char** argv)
 
         // eliminate occurences of plane in sphere (plane wins)
         for (int j = 0; j < sphere_inliers->indices.size(); j++) {
+            std::cout << "check to see if sphere_size is updating" << sphere_inliers->indices.size() << std::endl;
             int sphere_index = sphere_inliers->indices.at(j);
             if (getPointDistance(cloudFiltered->points.at(sphere_index),
                 cloudFiltered->points.at(index)) == 0)
