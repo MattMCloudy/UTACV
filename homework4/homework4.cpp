@@ -202,27 +202,14 @@ void segmentParallelPlane(const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cl
 }
 
 
-pcl::PointXYZRGBA* getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers, double max_z) {
-    double x_max = 0;
-    double y_max = 0;
-    double z_max = 0;
+pcl::PointXYZRGBA* getTopOfCluster(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &cluster_inliers, double max_z) {
     double z_min = 1;
     pcl::PointXYZRGBA* top = NULL;
-    for (int i = 0; i < sphere_inliers->indices.size(); i++) {
-        int index = sphere_inliers->indices.at(i);
+    for (int i = 0; i < cluster_inliers->indices.size(); i++) {
+        int index = cluster_inliers->indices.at(i);
 
         if (cloudFiltered->points.at(index).z > max_z)
             continue;
-
-        if (cloudFiltered->points.at(index).x > x_max)
-            x_max = cloudFiltered->points.at(index).x;
-
-        if (cloudFiltered->points.at(index).y > y_max)
-            y_max = cloudFiltered->points.at(index).y;
-
-        if (cloudFiltered->points.at(index).z > z_max) {
-            z_max = cloudFiltered->points.at(index).z;
-        }
 
         if (cloudFiltered->points.at(index).z < z_min) {
             z_min = cloudFiltered->points.at(index).z;
@@ -233,125 +220,9 @@ pcl::PointXYZRGBA* getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloud
     return top;
 }
 
-pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers, double max_z) {
-    double x_max = 0;
-    double y_max = 0;
-    double z_max = 0;
-    double z_min = 100;
-    pcl::PointXYZRGBA* top = NULL;
-    for (int i = 0; i < box_inliers->indices.size(); i++) {
-        int index = box_inliers->indices.at(i);
-
-        if (cloudFiltered->points.at(index).z > max_z)
-            continue;
-
-        if (cloudFiltered->points.at(index).x > x_max)
-            x_max = cloudFiltered->points.at(index).x;
-
-        if (cloudFiltered->points.at(index).y > y_max)
-            y_max = cloudFiltered->points.at(index).y;
-
-        if (cloudFiltered->points.at(index).z > z_max) {
-            z_max = cloudFiltered->points.at(index).z;
-        }
-
-        if (cloudFiltered->points.at(index).z < z_min) {
-            z_min = cloudFiltered->points.at(index).z;
-            top = &(cloudFiltered->points.at(index));
-        }
-    }
-
-    return top;
-}
-
-int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers, double max_z) {
-    std::vector<double> box_y_vals;
-    int box_count = 0;
-
-    if (box_inliers->indices.size() == 0)
-        return box_count;
-
-    for (int i = 0; i < box_inliers->indices.size(); i++) {
-        int index = box_inliers->indices.at(i);
-        if (cloudFiltered->points.at(index).z > max_z)
-            continue;
-
-        box_count=1;
-        box_y_vals.push_back(cloudFiltered->points.at(index).y);
-    }
-
-    std::sort(box_y_vals.begin(), box_y_vals.end());
-
-    double prev_val = box_y_vals.at(0);
-    for (int i = 1; i < box_y_vals.size(); i++) {
-        if ((box_y_vals.at(i)-prev_val) > 0.008
-            && (box_y_vals.at(i)-prev_val) < 0.1) {
-            std:cout << "FOUND ONE " << box_y_vals.at(i)-prev_val << std::endl;
-            box_count++;
-        }
-        prev_val = box_y_vals.at(i);
-    }
-    return box_count;
-}
-
-int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers, double max_z) {
-    std::vector<double> sphere_y_vals;
-    int sphere_count = 0;
-
-    if (sphere_inliers->indices.size() == 0)
-        return sphere_count;
-
-    for (int i = 0; i < sphere_inliers->indices.size(); i++) {
-        int index = sphere_inliers->indices.at(i);
-        if (cloudFiltered->points.at(index).z > max_z)
-            continue;
-        
-        sphere_count=1;
-        sphere_y_vals.push_back(cloudFiltered->points.at(index).y);
-    }
-
-    std::sort(sphere_y_vals.begin(), sphere_y_vals.end());
-
-    double prev_val = sphere_y_vals.at(0);
-    for (int i = 1; i < sphere_y_vals.size(); i++) {
-        if ((sphere_y_vals.at(i)-prev_val) > 0.05 
-            && (sphere_y_vals.at(i)-prev_val) < 0.07) {
-            std:cout << "FOUND ONE " << sphere_y_vals.at(i)-prev_val << std::endl;
-            sphere_count++;
-        }
-        prev_val = sphere_y_vals.at(i);
-    }
-    return sphere_count;
-}
-
-int getNumberOfBoxesX(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers, double max_z) {
-    std::vector<double> box_x_vals;
-    int box_count = 0;
-
-    if (box_inliers->indices.size() == 0)
-        return box_count;
-
-    for (int i = 0; i < box_inliers->indices.size(); i++) {
-        int index = box_inliers->indices.at(i);
-        if (cloudFiltered->points.at(index).z > max_z)
-            continue;
-
-        box_count=1;
-        box_x_vals.push_back(cloudFiltered->points.at(index).x);
-    }
-
-    std::sort(box_x_vals.begin(), box_x_vals.end());
-
-    double prev_val = box_x_vals.at(0);
-    for (int i = 1; i < box_x_vals.size(); i++) {
-        if ((box_x_vals.at(i)-prev_val) > 0.008
-            && (box_x_vals.at(i)-prev_val) < 0.1) {
-            std:cout << "FOUND ONE " << box_x_vals.at(i)-prev_val << std::endl;
-            box_count++;
-        }
-        prev_val = box_x_vals.at(i);
-    }
-    return box_count;
+void printDimensions(pcl::PointXYZRGBA* top_of_object, double plane_z_val, float size_m, string obj_name) {
+    obj_size_in = (top_of_object->z - plane_z_val) * 39.3701 * size_m;
+    std::cout << setprecision(1) << obj_name << " - " << obj_size_in << "\"" << std::endl;
 }
 
 /***********************************************************************************************************************
@@ -528,28 +399,6 @@ int main(int argc, char** argv)
         }
     }
 
-    pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers, plane_z_val);
-    if (top_of_sphere) {
-        std::cout << "top of sphere found!" << *top_of_sphere << std::endl;
-        std::cout << "top_x: " << top_of_sphere->x << std::endl;
-        std::cout << "top_y: " << top_of_sphere->y << std::endl;
-        std::cout << "top_z: " << top_of_sphere->z << std::endl;
-        top_of_sphere->r = 255;
-        top_of_sphere->g = 0;
-        top_of_sphere->b = 0;
-    }
-
-    pcl::PointXYZRGBA* top_of_box = getTopOfBox(cloudFiltered, box_inliers, plane_z_val);
-    if (top_of_box) {
-        std::cout << "top of box found!" << std::endl;
-        std::cout << "top_x: " << top_of_box->x << std::endl;
-        std::cout << "top_y: " << top_of_box->y << std::endl;
-        std::cout << "top_z: " << top_of_box->z << std::endl;
-        top_of_box->r = 255;
-        top_of_box->g = 0;
-        top_of_box->b = 0;
-    }
-
     for(int i = 0; i < clusterIndices.size(); i++)
     {        
         switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).r) {
@@ -560,7 +409,9 @@ int main(int argc, char** argv)
                             case 255:
                                 // Logic for Blue Spheres
                                 pcl::PointIndices::Ptr cluster_inliers(new pcl::PointIndices(clusterIndices.at(i)));
-                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, cluster_inliers, plane_z_val);
+                                pcl::PointXYZRGBA* top_of_sphere = getTopOfCluster(cloudFiltered, cluster_inliers, plane_z_val);
+                                if (top_of_sphere)
+                                    printDimensions(top_of_sphere, plane_z_val, voxelSize, "SPHERE");
                                 break;
                         }
                         break;
@@ -569,7 +420,9 @@ int main(int argc, char** argv)
                             case 0:
                                 // Logic for Green Boxes
                                 pcl::PointIndices::Ptr cluster_inliers(new pcl::PointIndices(clusterIndices.at(i)));
-                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, cluster_inliers, plane_z_val);
+                                pcl::PointXYZRGBA* top_of_box = getTopOfCluster(cloudFiltered, cluster_inliers, plane_z_val);
+                                if (top_of_box)
+                                    printDimensions(top_of_box, plane_z_val, voxelSize, "BOX");
                                 break;
                         }
                         break;
