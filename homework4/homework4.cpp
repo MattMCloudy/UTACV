@@ -438,6 +438,7 @@ int main(int argc, char** argv)
             if (getPointDistance(cloudFiltered->points.at(sphere_index),
                 cloudFiltered->points.at(index)) == 0)
             {
+                std::cout << "Well lets see how many times this prints" << std::endl;
                 sphere_inliers->indices.erase(sphere_inliers->indices.begin()+sphere_index);
             }
         }
