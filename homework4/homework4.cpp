@@ -438,9 +438,8 @@ int main(int argc, char** argv)
             if (getPointDistance(cloudFiltered->points.at(sphere_index),
                 cloudFiltered->points.at(index)) == 0)
             {
-                std::cout << "Well lets see how many times this prints: " << sphere_index << std::endl;
-                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+sphere_index);
-                std::cout << "broke where you thought" << std::endl;
+                std::cout << "Well lets see how many times this prints: " << j << std::endl;
+                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+j);
             }
         }
 
@@ -472,7 +471,7 @@ int main(int argc, char** argv)
                 cloudFiltered->points.at(plane_index)) == 0)
             {
                 point_in_other_planes = true;
-                box_inliers->indices.erase(box_inliers->indices.begin()+box_index);
+                box_inliers->indices.erase(box_inliers->indices.begin()+i);
             }
         }
 
@@ -483,7 +482,7 @@ int main(int argc, char** argv)
             if(getPointDistance(cloudFiltered->points.at(box_index),
                 cloudFiltered->points.at(sphere_index)) == 0)
             {
-                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+sphere_index);
+                sphere_inliers->indices.erase(sphere_inliers->indices.begin()+j);
             }
         }
         
