@@ -408,7 +408,7 @@ int main(int argc, char** argv)
         int index = sphere_inliers->indices.at(i);
 
         // skip sphere inliers with z>1
-        if (cloudFiltered->points.at(index).z > 1.0)
+        if (cloudFiltered->points.at(index).z > 0.7)
             continue;
 
         cloudFiltered->points.at(index).r = 0;
@@ -437,12 +437,10 @@ int main(int argc, char** argv)
         if ((std::abs(cloudFiltered->points.at(index).x) < min_x_diff)
             && (std::abs(cloudFiltered->points.at(index).y) < min_y_diff)) {
             plane_z_val = cloudFiltered->points.at(index).z;
-            std::cout << "Max Z: " << plane_z_val << std::endl;
-            cloudFiltered->points.at(index).r = 255;
-            cloudFiltered->points.at(index).g = 0;
-            cloudFiltered->points.at(index).b = 0;
         }
     }
+    
+    std::cout << "Max Z: " << plane_z_val << std::endl;
 
     //segment the box tops
     pcl::PointIndices::Ptr box_inliers(new pcl::PointIndices);
