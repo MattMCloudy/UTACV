@@ -559,7 +559,7 @@ int main(int argc, char** argv)
                         switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).b) {
                             case 255:
                                 // Logic for Blue Spheres
-                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, clusterIndices.at(i)::Ptr, plane_z_val);
+                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, clusterIndices.at(i).Ptr, plane_z_val);
                                 break;
                         }
                         break;
@@ -567,7 +567,7 @@ int main(int argc, char** argv)
                         switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).b) {
                             case 0:
                                 // Logic for Green Boxes
-                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, clusterIndices.at(i)::Ptr, plane_z_val);
+                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, clusterIndices.at(i).Ptr, plane_z_val);
                                 break;
                         }
                         break;
