@@ -438,7 +438,6 @@ int main(int argc, char** argv)
             if (getPointDistance(cloudFiltered->points.at(sphere_index),
                 cloudFiltered->points.at(index)) == 0)
             {
-                std::cout << "Well lets see how many times this prints: " << j << std::endl;
                 sphere_inliers->indices.erase(sphere_inliers->indices.begin()+j);
             }
         }
@@ -494,22 +493,26 @@ int main(int argc, char** argv)
     }
 
     pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers, plane_z_val);
-    std::cout << "top of sphere found!" << std::endl;
-    std::cout << "top_x: " << top_of_sphere->x << std::endl;
-    std::cout << "top_y: " << top_of_sphere->y << std::endl;
-    std::cout << "top_z: " << top_of_sphere->z << std::endl;
-    top_of_sphere->r = 255;
-    top_of_sphere->g = 0;
-    top_of_sphere->b = 0;
+    if (top_of_sphere) {
+        std::cout << "top of sphere found!" << std::endl;
+        std::cout << "top_x: " << top_of_sphere->x << std::endl;
+        std::cout << "top_y: " << top_of_sphere->y << std::endl;
+        std::cout << "top_z: " << top_of_sphere->z << std::endl;
+        top_of_sphere->r = 255;
+        top_of_sphere->g = 0;
+        top_of_sphere->b = 0;
+    }
 
     pcl::PointXYZRGBA* top_of_box = getTopOfBox(cloudFiltered, box_inliers, plane_z_val);
-    std::cout << "top of box found!" << std::endl;
-    std::cout << "top_x: " << top_of_box->x << std::endl;
-    std::cout << "top_y: " << top_of_box->y << std::endl;
-    std::cout << "top_z: " << top_of_box->z << std::endl;
-    top_of_box->r = 255;
-    top_of_box->g = 0;
-    top_of_box->b = 0;
+    if (top_of_box) {
+        std::cout << "top of box found!" << std::endl;
+        std::cout << "top_x: " << top_of_box->x << std::endl;
+        std::cout << "top_y: " << top_of_box->y << std::endl;
+        std::cout << "top_z: " << top_of_box->z << std::endl;
+        top_of_box->r = 255;
+        top_of_box->g = 0;
+        top_of_box->b = 0;
+    }    
 
     int sphere_count = getNumberOfSpheres(cloudFiltered, sphere_inliers, plane_z_val);
     std::cout << "sphere_count: " << sphere_count << std::endl;
