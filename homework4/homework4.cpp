@@ -270,7 +270,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     if (box_inliers->indices.size() == 0)
         return box_count;
-        
+
     for (int i = 0; i < box_inliers->indices.size(); i++) {
         int index = box_inliers->indices.at(i);
         if (cloudFiltered->points.at(index).z > max_z)
@@ -284,7 +284,8 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     double prev_val = box_y_vals.at(0);
     for (int i = 1; i < box_y_vals.size(); i++) {
-        if ((box_y_vals.at(i)-prev_val) > 0.008) {
+        if ((box_y_vals.at(i)-prev_val) > 0.008)
+            && (box_y_vals.at(i)-prev_val) < 0.1)) {
             std:cout << "FOUND ONE " << box_y_vals.at(i)-prev_val << std::endl;
             box_count++;
         }
@@ -302,10 +303,6 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
 
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
-        std::cout << "sphere location: x " << cloudFiltered->points.at(index).x << " y " 
-            << cloudFiltered->points.at(index).y << " z " << cloudFiltered->points.at(index).z
-            << std::endl;
-            
         if (cloudFiltered->points.at(index).z > max_z)
             continue;
         
@@ -317,7 +314,8 @@ int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, p
 
     double prev_val = sphere_y_vals.at(0);
     for (int i = 1; i < sphere_y_vals.size(); i++) {
-        if ((sphere_y_vals.at(i)-prev_val) > 0.05) {
+        if ((((sphere_y_vals.at(i)-prev_val) > 0.05) 
+            && (sphere_y_vals.at(i)-prev_val) < 0.1)) {
             std:cout << "FOUND ONE " << sphere_y_vals.at(i)-prev_val << std::endl;
             sphere_count++;
         }
