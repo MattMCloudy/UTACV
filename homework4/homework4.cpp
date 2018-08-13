@@ -259,10 +259,6 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
             z_min = cloudFiltered->points.at(index).z;
             top = &(cloudFiltered->points.at(index));
         }
-
-        std::cout << "x_max: " << x_max << std::endl;
-        std::cout << "y_max: " << y_max << std::endl;
-        std::cout << "z_max: " << z_max << std::endl;
     }
 
     return top;
@@ -284,7 +280,7 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 
     double prev_val = box_y_vals.at(0);
     for (int i = 1; i < box_y_vals.size(); i++) {
-        if ((box_y_vals.at(i)-prev_val) > 0.05) {
+        if ((box_y_vals.at(i)-prev_val) > 0.0005) {
             std:cout << "FOUND ONE " << box_y_vals.at(i)-prev_val << std::endl;
             box_count++;
         }
@@ -459,6 +455,9 @@ int main(int argc, char** argv)
     std::cout << "top_x: " << top_of_sphere->x << std::endl;
     std::cout << "top_y: " << top_of_sphere->y << std::endl;
     std::cout << "top_z: " << top_of_sphere->z << std::endl;
+    top_of_sphere->r = 255;
+    top_of_sphere->g = 0;
+    top_of_sphere->b = 0;
 
     pcl::PointXYZRGBA* top_of_box = getTopOfBox(cloudFiltered, box_inliers);
     std::cout << "top of box found!" << std::endl;
