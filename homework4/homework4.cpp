@@ -340,7 +340,7 @@ int getNumberOfBoxesX(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pc
         box_x_vals.push_back(cloudFiltered->points.at(index).x);
     }
 
-    std::sort(box_y_vals.begin(), box_y_vals.end());
+    std::sort(box_x_vals.begin(), box_x_vals.end());
 
     double prev_val = box_x_vals.at(0);
     for (int i = 1; i < box_x_vals.size(); i++) {
