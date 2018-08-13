@@ -267,6 +267,10 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
 int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &box_inliers, double max_z) {
     std::vector<double> box_y_vals;
     int box_count = 0;
+
+    if (box_inliers->indices.size() == 0)
+        return box_count;
+        
     for (int i = 0; i < box_inliers->indices.size(); i++) {
         int index = box_inliers->indices.at(i);
         if (cloudFiltered->points.at(index).z > max_z)
@@ -292,6 +296,10 @@ int getNumberOfBoxes(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl
 int getNumberOfSpheres(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFiltered, pcl::PointIndices::Ptr &sphere_inliers, double max_z) {
     std::vector<double> sphere_y_vals;
     int sphere_count = 0;
+
+    if (sphere_inliers->indices.size() == 0)
+        return sphere_count;
+
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
         std::cout << "sphere location: x " << cloudFiltered->points.at(index).x << " y " 
