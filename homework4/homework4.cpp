@@ -207,7 +207,7 @@ pcl::PointXYZRGBA* getTopOfSphere(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloud
     double y_max = 0;
     double z_max = 0;
     double z_min = 1;
-    pcl::PointXYZRGBA* top;
+    pcl::PointXYZRGBA* top = NULL;
     for (int i = 0; i < sphere_inliers->indices.size(); i++) {
         int index = sphere_inliers->indices.at(i);
 
@@ -238,7 +238,7 @@ pcl::PointXYZRGBA* getTopOfBox(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &cloudFil
     double y_max = 0;
     double z_max = 0;
     double z_min = 100;
-    pcl::PointXYZRGBA* top;
+    pcl::PointXYZRGBA* top = NULL;
     for (int i = 0; i < box_inliers->indices.size(); i++) {
         int index = box_inliers->indices.at(i);
 
@@ -493,7 +493,7 @@ int main(int argc, char** argv)
     }
 
     pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, sphere_inliers, plane_z_val);
-    if (*top_of_sphere != NULL) {
+    if (top_of_sphere) {
         std::cout << "top of sphere found!" << *top_of_sphere << std::endl;
         std::cout << "top_x: " << top_of_sphere->x << std::endl;
         std::cout << "top_y: " << top_of_sphere->y << std::endl;
@@ -504,7 +504,7 @@ int main(int argc, char** argv)
     }
 
     pcl::PointXYZRGBA* top_of_box = getTopOfBox(cloudFiltered, box_inliers, plane_z_val);
-    if (*top_of_box != NULL) {
+    if (top_of_box) {
         std::cout << "top of box found!" << std::endl;
         std::cout << "top_x: " << top_of_box->x << std::endl;
         std::cout << "top_y: " << top_of_box->y << std::endl;
