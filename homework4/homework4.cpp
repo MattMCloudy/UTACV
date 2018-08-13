@@ -433,7 +433,7 @@ int main(int argc, char** argv)
         cloudFiltered->points.at(index).b = 255;
 
         // eliminate occurences of plane in sphere (plane wins)
-        for (int j = 0; j < sphere_inliers.size(); j++) {
+        for (int j = 0; j < sphere_inliers->indices.size(); j++) {
             int sphere_index = sphere_inliers->indices.at(j);
             if (getPointDistance(cloudFiltered->points.at(sphere_index),
                 cloudFiltered->points.at(index)) == 0)
