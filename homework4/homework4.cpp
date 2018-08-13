@@ -548,19 +548,32 @@ int main(int argc, char** argv)
         top_of_box->r = 255;
         top_of_box->g = 0;
         top_of_box->b = 0;
-    }    
+    }
 
-    int sphere_count = getNumberOfSpheres(cloudFiltered, sphere_inliers, plane_z_val);
-    std::cout << "sphere_count: " << sphere_count << std::endl;
-    
-    int box_count = (getNumberOfBoxes(cloudFiltered, box_inliers, plane_z_val) > getNumberOfBoxesX(cloudFiltered, box_inliers, plane_z_val))
-                    ? getNumberOfBoxes(cloudFiltered, box_inliers, plane_z_val)
-                    : getNumberOfBoxesX(cloudFiltered, box_inliers, plane_z_val);
-    std::cout << "box_count: " << box_count << std::endl;
-
-
-    // assuming boxes are all the same size...
-
+    for(int i = 0; i < clusterIndices.size(); i++)
+    {        
+        switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).r) {
+            case 0:
+                switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).g) {
+                    case 0:
+                        switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).b) {
+                            case 255:
+                                // Logic for Blue Spheres
+                                pcl::PointXYZRGBA* top_of_sphere = getTopOfSphere(cloudFiltered, pcl::PointIndices(clusterIndices.at(i))::Ptr, plane_z_val);
+                                break;
+                        }
+                        break;
+                    case 255:
+                        switch(cloudFiltered->points.at(clusterIndices.at(i).indices.at(50)).b) {
+                            case 0:
+                                // Logic for Green Boxes
+                                break;
+                        }
+                        break;
+                }
+                break;
+        }
+    }
 
     // get the elapsed time
     double elapsedTime = watch.getTimeSeconds();
